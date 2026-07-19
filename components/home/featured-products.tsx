@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import Image from "next/image"
 import type { Product } from "@/lib/types"
-import { getProducts, productCover } from "@/lib/api"
+import { getProducts } from "@/lib/api"
+import { ProductCardMedia } from "@/components/product/product-card-media"
 
 export function FeaturedProducts() {
   const [featured, setFeatured] = useState<Product[]>([])
@@ -42,16 +42,12 @@ export function FeaturedProducts() {
                 style={{ animationDelay: `${index * 150}ms`, animationFillMode: "forwards" }}
               >
                 <Link href={`/product/${product.id}`} className="block">
-                  <div className="relative aspect-square overflow-hidden bg-cream-dark mb-6 image-zoom">
-                    <Image
-                      src={productCover(product)}
-                      alt={product.title}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    />
-                    <div className="absolute inset-0 bg-sage-dark/0 group-hover:bg-sage-dark/20 transition-colors duration-500" />
-                  </div>
+                  <ProductCardMedia
+                    product={product}
+                    className="mb-6"
+                    showOverlay
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  />
                   <div className="text-center">
                     <h3 className="font-serif text-lg text-sage-dark mb-2 group-hover:text-gold transition-colors">
                       {product.title}

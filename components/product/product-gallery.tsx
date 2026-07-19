@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState, type MouseEvent } from "react"
 import Image from "next/image"
 import useEmblaCarousel from "embla-carousel-react"
 import type { ProductImage } from "@/lib/types"
@@ -49,6 +49,19 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
     return () => viewport.removeEventListener("wheel", onWheel)
   }, [emblaApi, images.length])
 
+  const onMouseMove = (event: MouseEvent<HTMLDivElement>) => {
+    if (!emblaApi || images.length < 2) return
+    const rect = event.currentTarget.getBoundingClientRect()
+    const x = Math.min(Math.max(event.clientX - rect.left, 0), rect.width)
+    const next = Math.min(
+      images.length - 1,
+      Math.floor((x / rect.width) * images.length)
+    )
+    if (next !== emblaApi.selectedScrollSnap()) {
+      emblaApi.scrollTo(next)
+    }
+  }
+
   if (!images.length) {
     return (
       <div className="relative aspect-square overflow-hidden bg-cream-dark animate-fade-in">
@@ -62,8 +75,9 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
   return (
     <div className="space-y-4 opacity-0 animate-fade-in" style={{ animationFillMode: "forwards" }}>
       <div
-        className="overflow-hidden bg-cream-dark cursor-grab active:cursor-grabbing touch-pan-y"
+        className="overflow-hidden bg-cream-dark cursor-ew-resize touch-pan-y"
         ref={emblaRef}
+        onMouseMove={onMouseMove}
       >
         <div className="flex">
           {images.map((image, index) => (
@@ -76,7 +90,7 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
                 alt={`${title} — фото ${index + 1}`}
                 fill
                 priority={index === 0}
-                className="object-cover transition-transform duration-700"
+                className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
@@ -87,8 +101,19 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
       {images.length > 1 && (
         <>
           <p className="text-sage-light text-xs tracking-wider uppercase">
-            Листайте мышью · {selected + 1} / {images.length}
+            Водите мышью по фото · {selected + 1} / {images.length}
           </p>
+          <div className="flex gap-1.5 mb-1">
+            {images.map((image, i) => (
+              <span
+                key={image.id}
+                className={cn(
+                  "h-0.5 flex-1 transition-colors",
+                  i === selected ? "bg-gold" : "bg-border"
+                )}
+              />
+            ))}
+          </div>
           <div className="flex gap-3 overflow-x-auto pb-1">
             {images.map((image, index) => (
               <button

@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
-import Image from "next/image"
 import type { CatalogFilters, Category, Product } from "@/lib/types"
-import { getCategories, getFilters, getProducts, productCover } from "@/lib/api"
+import { getCategories, getFilters, getProducts } from "@/lib/api"
+import { ProductCardMedia } from "@/components/product/product-card-media"
 import { Filter, X, ChevronDown } from "lucide-react"
 
 export function CatalogContent() {
@@ -196,15 +196,11 @@ export function CatalogContent() {
                   style={{ animationDelay: `${Math.min(index, 8) * 80}ms`, animationFillMode: "forwards" }}
                 >
                   <Link href={`/product/${product.id}`} className="block">
-                    <div className="relative aspect-square overflow-hidden bg-cream-dark mb-5">
-                      <Image
-                        src={productCover(product)}
-                        alt={product.title}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                      />
-                    </div>
+                    <ProductCardMedia
+                      product={product}
+                      className="mb-5"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                    />
                     <h3 className="font-serif text-xl text-sage-dark mb-1 group-hover:text-gold transition-colors">
                       {product.title}
                     </h3>
