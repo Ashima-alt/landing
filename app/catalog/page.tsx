@@ -1,7 +1,6 @@
 "use client"
 
 import { Suspense } from "react"
-import { StoreProvider } from "@/lib/store-context"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CatalogContent } from "@/components/catalog/catalog-content"
@@ -16,16 +15,14 @@ function CatalogLoading() {
 
 export default function CatalogPage() {
   return (
-    <StoreProvider>
-      <div className="min-h-screen bg-cream">
-        <Header />
-        <main className="pt-24 md:pt-32">
-          <Suspense fallback={<CatalogLoading />}>
-            <CatalogContent />
-          </Suspense>
-        </main>
-        <Footer />
-      </div>
-    </StoreProvider>
+    <div className="min-h-screen bg-cream">
+      <Header />
+      <main className="pt-24 md:pt-32">
+        <Suspense fallback={<CatalogLoading />}>
+          <CatalogContent />
+        </Suspense>
+      </main>
+      <Footer />
+    </div>
   )
 }

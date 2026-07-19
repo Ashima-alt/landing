@@ -1,66 +1,90 @@
-# Быстрый запуск Next.js + Nginx
+# Быстрый деплой (Nginx + SSL + PM2)
 
-## 1) Подготовка сервера (Ubuntu)
+Репозиторий: https://github.com/eichdmk/landing.git  
+Домен по умолчанию: `valoremilano.ru`
+
+## Перед первым деплоем
+
+1. DNS: A-записи `valoremilano.ru` и `www` → IP VPS  
+2. На VPS Ubuntu:
 
 ```bash
-sudo apt update
-sudo apt install -y nginx curl
-curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-sudo apt install -y nodejs
-node -v
-npm -v
+sudo mkdir -p /var/www
+sudo chown "$USER:$USER" /var/www
+cd /var/www
+git clone https://github.com/eichdmk/landing.git landing
+cd landing
+
+cp deploy/deploy.env.example deploy/deploy.env
+nano deploy/deploy.env   # DOMAIN, CERTBOT_EMAIL, DB_PASSWORD, REPO_URL
+
+sudo bash deploy/setup.sh
 ```
 
-## 2) Запуск приложения
+3. Логин в админку — в `server/.env`:
 
 ```bash
-cd /var/www/amir-landing
-npm ci
-npm run build
-PORT=3000 npm run start
+nano /var/www/landing/server/.env
 ```
 
-Для фона лучше использовать `pm2` или `systemd`.
-
-### Вариант с pm2 (быстро)
-
 ```bash
-sudo npm i -g pm2
-cd /var/www/amir-landing
-pm2 start "npm run start -- --port 3000" --name amir-landing
-pm2 save
-pm2 startup
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=твой-пароль
+COOKIE_SECURE=true
 ```
 
-## 3) Подключение Nginx
-
-Скопируй шаблон:
+После правки пароля:
 
 ```bash
-sudo cp deploy/nginx/amir-landing.conf /etc/nginx/sites-available/amir-landing
+pm2 restart landing-api
 ```
 
-Открой файл и замени `your-domain.com` на реальный домен.
+Админка: `https://твой-домен/admin/`
+
+---
+
+## Обычный (быстрый) деплой обновлений
+
+На сервере:
 
 ```bash
-sudo ln -s /etc/nginx/sites-available/amir-landing /etc/nginx/sites-enabled/amir-landing
-sudo nginx -t
-sudo systemctl reload nginx
+cd /var/www/landing
+bash deploy/deploy.sh
 ```
 
-## 4) HTTPS (Let's Encrypt)
+Или с локальной машины (если настроен SSH):
 
 ```bash
-sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d your-domain.com -d www.your-domain.com
+ssh user@vps 'cd /var/www/landing && bash deploy/deploy.sh'
 ```
 
-## 5) Обновление проекта
+Скрипт: `git pull` → сборка Next + API → `pm2 restart`.
+
+---
+
+## Файлы
+
+| Файл | Назначение |
+|------|------------|
+| [`deploy/setup.sh`](setup.sh) | Первый запуск: Node, Postgres, Nginx, PM2, **Let's Encrypt SSL** |
+| [`deploy/deploy.sh`](deploy.sh) | Быстрый редеплой |
+| [`deploy/production.env.example`](production.env.example) | Шаблон `server/.env` (логин/пароль админки) |
+| [`deploy/deploy.env.example`](deploy.env.example) | Домен, email для SSL, пароль БД |
+| [`deploy/ecosystem.config.cjs`](ecosystem.config.cjs) | PM2: `landing` + `landing-api` |
+| [`deploy/nginx/amir-landing.conf`](nginx/amir-landing.conf) | Nginx (Certbot допишет HTTPS) |
+
+---
+
+## Важно про `.env`
+
+- Логин/пароль админки только в **`server/.env`** (`ADMIN_USERNAME` / `ADMIN_PASSWORD`)
+- При рестарте API пароль из `.env` синхронизируется в БД
+- Для HTTPS: `COOKIE_SECURE=true`
+- Не коммить `server/.env` и `deploy/deploy.env`
+
+Второй пользователь (опционально):
 
 ```bash
-cd /var/www/amir-landing
-git pull
-npm ci
-npm run build
-pm2 restart amir-landing
+EDITOR_USERNAME=editor
+EDITOR_PASSWORD=другой-пароль
 ```

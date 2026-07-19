@@ -47,16 +47,16 @@ export function Header() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-12">
             <Link
-              href="#collection"
+              href="/catalog"
               className={cn(
                 "text-sm tracking-widest uppercase transition-colors duration-300 hover:text-gold",
                 isScrolled ? "text-sage" : "text-cream/90"
               )}
             >
-              Коллекция
+              Каталог
             </Link>
             <Link
-              href="#about"
+              href="/#about"
               className={cn(
                 "text-sm tracking-widest uppercase transition-colors duration-300 hover:text-gold",
                 isScrolled ? "text-sage" : "text-cream/90"
@@ -65,7 +65,7 @@ export function Header() {
               О бренде
             </Link>
             <Link
-              href="#categories"
+              href="/#categories"
               className={cn(
                 "text-sm tracking-widest uppercase transition-colors duration-300 hover:text-gold",
                 isScrolled ? "text-sage" : "text-cream/90"
@@ -78,13 +78,13 @@ export function Header() {
           {/* Right actions */}
           <div className="flex items-center gap-6">
             <Link
-              href="#contact"
+              href="/catalog"
               className={cn(
                 "hidden md:inline-flex items-center justify-center bg-gold hover:bg-gold-dark text-sage-dark px-6 py-3 text-xs tracking-widest uppercase transition-colors",
                 isScrolled ? "shadow-sm" : "gold-glow"
               )}
             >
-              Связаться
+              Каталог
             </Link>
             <button
               onClick={() => setIsMobileMenuOpen(true)}
@@ -122,28 +122,28 @@ export function Header() {
           </div>
           <nav className="flex flex-col gap-8">
             <Link
-              href="#top"
+              href="/"
               onClick={() => setIsMobileMenuOpen(false)}
               className="font-serif text-3xl text-cream hover:text-gold transition-colors"
             >
               Главная
             </Link>
             <Link
-              href="#collection"
+              href="/catalog"
               onClick={() => setIsMobileMenuOpen(false)}
               className="font-serif text-3xl text-cream hover:text-gold transition-colors"
             >
-              Коллекция
+              Каталог
             </Link>
             <Link
-              href="#about"
+              href="/#about"
               onClick={() => setIsMobileMenuOpen(false)}
               className="font-serif text-3xl text-cream hover:text-gold transition-colors"
             >
               О бренде
             </Link>
             <Link
-              href="#contact"
+              href="/#contact"
               onClick={() => setIsMobileMenuOpen(false)}
               className="font-serif text-3xl text-cream hover:text-gold transition-colors"
             >

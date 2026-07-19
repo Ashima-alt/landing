@@ -25,15 +25,15 @@ export function Footer() {
             <ul className="space-y-4">
               <li>
                 <Link
-                  href="#collection"
+                  href="/catalog"
                   className="text-cream/70 hover:text-gold transition-colors text-sm"
                 >
-                  Коллекция
+                  Каталог
                 </Link>
               </li>
               <li>
                 <Link
-                  href="#about"
+                  href="/#about"
                   className="text-cream/70 hover:text-gold transition-colors text-sm"
                 >
                   О бренде
@@ -41,7 +41,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#categories"
+                  href="/#categories"
                   className="text-cream/70 hover:text-gold transition-colors text-sm"
                 >
                   Категории
@@ -49,7 +49,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#contact"
+                  href="/#contact"
                   className="text-cream/70 hover:text-gold transition-colors text-sm"
                 >
                   Контакты

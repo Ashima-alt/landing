@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Valore Milano — Админ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/admin/styles.css" />
+</head>
+<body>
+  <div id="login-screen" class="login-screen">
+    <form id="login-form" class="login-card">
+      <p class="brand">Valore Milano</p>
+      <p class="brand-sub">Вход в админ-панель</p>
+      <label>Логин
+        <input name="username" autocomplete="username" required />
+      </label>
+      <label>Пароль
+        <input name="password" type="password" autocomplete="current-password" required />
+      </label>
+      <p id="login-error" class="login-error hidden"></p>
+      <button type="submit" class="btn primary login-submit">Войти</button>
+    </form>
+  </div>
+
+  <div id="app-shell" class="app hidden">
+    <aside class="sidebar">
+      <p class="brand">Valore Milano</p>
+      <p class="brand-sub">Админ-панель</p>
+      <p class="user-line">Вы вошли как <strong id="current-user">—</strong></p>
+      <nav>
+        <button type="button" class="nav-btn active" data-view="products">Товары</button>
+        <button type="button" class="nav-btn" data-view="categories">Категории</button>
+      </nav>
+      <button type="button" class="btn ghost logout-btn" id="btn-logout">Выйти</button>
+      <a class="site-link" href="/" target="_blank" rel="noopener">Открыть сайт →</a>
+    </aside>
+
+    <main class="main">
+      <section id="view-products" class="view">
+        <header class="view-header">
+          <div>
+            <h1>Товары</h1>
+            <p class="muted">Управление каталогом, фото и атрибутами</p>
+          </div>
+          <button type="button" class="btn primary" id="btn-new-product">Новый товар</button>
+        </header>
+
+        <div class="toolbar">
+          <input type="search" id="product-search" placeholder="Поиск по названию или артикулу…" />
+        </div>
+
+        <div id="products-list" class="card-list"></div>
+      </section>
+
+      <section id="view-categories" class="view hidden">
+        <header class="view-header">
+          <div>
+            <h1>Категории</h1>
+            <p class="muted">Группы для фильтров каталога</p>
+          </div>
+          <button type="button" class="btn primary" id="btn-new-category">Новая категория</button>
+        </header>
+        <div id="categories-list" class="card-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="product-dialog">
+    <form id="product-form" method="dialog">
+      <header class="dialog-header">
+        <h2 id="product-dialog-title">Товар</h2>
+        <button type="button" class="icon-btn" data-close>×</button>
+      </header>
+      <div class="dialog-body">
+        <input type="hidden" name="id" />
+        <label>Название
+          <input name="title" required />
+        </label>
+        <div class="grid-2">
+          <label>Артикул
+            <input name="article" required />
+          </label>
+          <label>Категория
+            <select name="category_id" required></select>
+          </label>
+        </div>
+        <div class="grid-2">
+          <label>Размер
+            <input name="size" />
+          </label>
+          <label>Материал
+            <input name="material" />
+          </label>
+        </div>
+        <label>Описание
+          <textarea name="description" rows="5"></textarea>
+        </label>
+        <label>Порядок
+          <input name="sort_order" type="number" value="0" />
+        </label>
+
+        <div class="images-block" id="images-block">
+          <div class="images-header">
+            <span>Фотографии</span>
+            <label class="btn ghost file-btn">
+              Загрузить
+              <input type="file" id="image-upload" accept="image/*" multiple hidden />
+            </label>
+          </div>
+          <p class="hint">Перетащите карточки, чтобы изменить порядок. Листать на сайте можно мышью.</p>
+          <div id="images-grid" class="images-grid"></div>
+        </div>
+      </div>
+      <footer class="dialog-footer">
+        <button type="button" class="btn danger ghost" id="btn-delete-product" hidden>Удалить</button>
+        <div class="spacer"></div>
+        <button type="button" class="btn ghost" data-close>Отмена</button>
+        <button type="submit" class="btn primary">Сохранить</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog id="category-dialog">
+    <form id="category-form" method="dialog">
+      <header class="dialog-header">
+        <h2 id="category-dialog-title">Категория</h2>
+        <button type="button" class="icon-btn" data-close>×</button>
+      </header>
+      <div class="dialog-body">
+        <input type="hidden" name="id" />
+        <label>Название
+          <input name="name" required />
+        </label>
+        <label>Slug
+          <input name="slug" placeholder="plates" />
+        </label>
+        <label>Порядок
+          <input name="sort_order" type="number" value="0" />
+        </label>
+      </div>
+      <footer class="dialog-footer">
+        <button type="button" class="btn danger ghost" id="btn-delete-category" hidden>Удалить</button>
+        <div class="spacer"></div>
+        <button type="button" class="btn ghost" data-close>Отмена</button>
+        <button type="submit" class="btn primary">Сохранить</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="/admin/app.js" type="module"></script>
+</body>
+</html>
