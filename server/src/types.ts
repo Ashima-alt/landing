@@ -4,6 +4,8 @@ export interface Category {
   slug: string
   sort_order: number
   created_at: string
+  image_path?: string | null
+  image_url?: string | null
 }
 
 export interface ProductImage {
@@ -34,4 +36,23 @@ export function imageUrl(path: string): string {
     return path.startsWith("/") ? path : `/${path}`
   }
   return `/uploads/${path}`
+}
+
+export function mapCategory(row: {
+  id: string
+  name: string
+  slug: string
+  sort_order: number
+  created_at: string
+  image_path?: string | null
+}): Category {
+  return {
+    id: row.id,
+    name: row.name,
+    slug: row.slug,
+    sort_order: row.sort_order,
+    created_at: row.created_at,
+    image_path: row.image_path ?? null,
+    image_url: row.image_path ? imageUrl(row.image_path) : null,
+  }
 }

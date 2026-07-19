@@ -98,22 +98,55 @@ function renderCategories() {
     return
   }
   root.innerHTML = categories
-    .map(
-      (c) => `
-      <article class="item-card category">
+    .map((c) => {
+      const thumb = c.image_url
+        ? `<img class="thumb" src="${mediaUrl(c.image_url)}" alt="" />`
+        : `<div class="thumb placeholder">нет фото</div>`
+      return `
+      <article class="item-card">
+        ${thumb}
         <div>
           <h3>${escapeHtml(c.name)}</h3>
-          <p class="meta">slug: ${escapeHtml(c.slug)} · порядок ${c.sort_order}</p>
+          <p class="meta">slug: ${escapeHtml(c.slug)} · порядок ${c.sort_order}${
+            c.image_url ? " · с фото" : ""
+          }</p>
         </div>
         <div class="actions">
           <button type="button" class="btn ghost small" data-edit-category="${c.id}">Изменить</button>
         </div>
       </article>`
-    )
+    })
     .join("")
 
   $$("[data-edit-category]").forEach((btn) => {
     btn.addEventListener("click", () => openCategoryDialog(btn.dataset.editCategory))
+  })
+}
+
+function renderCategoryImage(cat) {
+  const grid = $("#category-image-preview")
+  if (!cat?.image_url) {
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1;padding:1.25rem">Фото не задано</div>`
+    return
+  }
+  grid.innerHTML = `
+    <div class="image-card">
+      <img src="${mediaUrl(cat.image_url)}" alt="" />
+      <button type="button" class="remove" id="btn-remove-category-image" title="Удалить">×</button>
+    </div>`
+  $("#btn-remove-category-image")?.addEventListener("click", async () => {
+    const id = $("#category-form").id.value
+    if (!id || !confirm("Убрать фото категории?")) return
+    try {
+      const updated = await api(`/api/categories/${id}/image`, { method: "DELETE" })
+      const idx = categories.findIndex((c) => c.id === id)
+      if (idx >= 0) categories[idx] = updated
+      renderCategoryImage(updated)
+      renderCategories()
+      toast("Фото удалено")
+    } catch (err) {
+      toast(err.message, true)
+    }
   })
 }
 
@@ -122,6 +155,7 @@ function openCategoryDialog(id = null) {
   const form = $("#category-form")
   form.reset()
   $("#btn-delete-category").hidden = !id
+  $("#category-image-block").hidden = !id
   $("#category-dialog-title").textContent = id ? "Редактировать категорию" : "Новая категория"
 
   if (id) {
@@ -131,8 +165,10 @@ function openCategoryDialog(id = null) {
     form.name.value = cat.name
     form.slug.value = cat.slug
     form.sort_order.value = cat.sort_order
+    renderCategoryImage(cat)
   } else {
     form.id.value = ""
+    renderCategoryImage(null)
   }
   dialog.showModal()
 }
@@ -157,16 +193,41 @@ $("#category-form").addEventListener("submit", async (e) => {
         body: JSON.stringify(payload),
       })
       toast("Категория сохранена")
+      $("#category-dialog").close()
+      await loadCategories()
     } else {
-      await api("/api/categories", {
+      const created = await api("/api/categories", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       })
-      toast("Категория создана")
+      toast("Категория создана — можно добавить фото")
+      await loadCategories()
+      openCategoryDialog(created.id)
     }
-    $("#category-dialog").close()
-    await loadCategories()
+  } catch (err) {
+    toast(err.message, true)
+  }
+})
+
+$("#category-image-upload").addEventListener("change", async (e) => {
+  const file = e.target.files?.[0]
+  e.target.value = ""
+  const id = $("#category-form").id.value
+  if (!id || !file) return
+
+  const fd = new FormData()
+  fd.append("file", file)
+  try {
+    const updated = await api(`/api/categories/${id}/image`, {
+      method: "POST",
+      body: fd,
+    })
+    const idx = categories.findIndex((c) => c.id === id)
+    if (idx >= 0) categories[idx] = updated
+    renderCategoryImage(updated)
+    renderCategories()
+    toast("Фото категории загружено")
   } catch (err) {
     toast(err.message, true)
   }

@@ -4,26 +4,19 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import type { Category } from "@/lib/types"
-import { getCategories } from "@/lib/api"
+import { getCategories, mediaUrl } from "@/lib/api"
 import { ArrowUpRight } from "lucide-react"
 
-const CATEGORY_IMAGES: Record<string, { image: string; description: string }> = {
-  plates: {
-    image: "/images/categories/plates.jpg",
-    description: "Handcrafted dinner and serving plates",
-  },
-  cups: {
-    image: "/images/categories/cups.jpg",
-    description: "Elegant cups and saucers",
-  },
-  cutlery: {
-    image: "/images/categories/cutlery.jpg",
-    description: "Premium gold-plated flatware",
-  },
-  sets: {
-    image: "/images/categories/sets.jpg",
-    description: "Complete dinnerware collections",
-  },
+const FALLBACK_IMAGES: Record<string, string> = {
+  plates: "/images/categories/plates.jpg",
+  cups: "/images/categories/cups.jpg",
+  cutlery: "/images/categories/cutlery.jpg",
+  sets: "/images/categories/sets.jpg",
+}
+
+function categoryImage(category: Category): string | null {
+  if (category.image_url) return mediaUrl(category.image_url)
+  return FALLBACK_IMAGES[category.slug] ?? null
 }
 
 export function CategoriesSection() {
@@ -48,7 +41,7 @@ export function CategoriesSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {categories.map((category, index) => {
-            const meta = CATEGORY_IMAGES[category.slug]
+            const image = categoryImage(category)
             return (
               <Link
                 key={category.id}
@@ -56,9 +49,9 @@ export function CategoriesSection() {
                 className="group relative aspect-[16/10] overflow-hidden opacity-0 animate-fade-in bg-cream-dark"
                 style={{ animationDelay: `${index * 100}ms`, animationFillMode: "forwards" }}
               >
-                {meta?.image && (
+                {image && (
                   <Image
-                    src={meta.image}
+                    src={image}
                     alt={category.name}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -72,9 +65,7 @@ export function CategoriesSection() {
                       <h3 className="font-serif text-2xl md:text-3xl text-cream mb-2">
                         {category.name}
                       </h3>
-                      <p className="text-cream/70 text-sm">
-                        {meta?.description || "Смотреть коллекцию"}
-                      </p>
+                      <p className="text-cream/70 text-sm">Смотреть коллекцию</p>
                     </div>
                     <div className="w-12 h-12 rounded-full border border-gold/50 flex items-center justify-center text-gold group-hover:bg-gold group-hover:text-sage-dark transition-all duration-300">
                       <ArrowUpRight className="w-5 h-5" />

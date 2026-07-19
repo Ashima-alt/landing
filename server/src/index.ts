@@ -72,7 +72,7 @@ async function main() {
   })
 
   await authRoutes(app)
-  await categoryRoutes(app)
+  await categoryRoutes(app, uploadDir)
   await productRoutes(app, uploadDir)
   await filterRoutes(app)
 

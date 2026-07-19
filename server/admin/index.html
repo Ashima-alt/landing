@@ -140,6 +140,18 @@
         <label>Порядок
           <input name="sort_order" type="number" value="0" />
         </label>
+
+        <div class="images-block" id="category-image-block" hidden>
+          <div class="images-header">
+            <span>Фото (необязательно)</span>
+            <label class="btn ghost file-btn">
+              Загрузить
+              <input type="file" id="category-image-upload" accept="image/*" hidden />
+            </label>
+          </div>
+          <p class="hint">Если фото нет — на лендинге будет фон без картинки (или старое фото по slug, если есть).</p>
+          <div id="category-image-preview" class="images-grid"></div>
+        </div>
       </div>
       <footer class="dialog-footer">
         <button type="button" class="btn danger ghost" id="btn-delete-category" hidden>Удалить</button>

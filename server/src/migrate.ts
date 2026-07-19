@@ -63,6 +63,12 @@ export async function migrate() {
     CREATE INDEX IF NOT EXISTS idx_product_images_product_id ON product_images(product_id);
   `)
 
+  // Optional category cover photo (nullable)
+  await query(`
+    ALTER TABLE categories
+    ADD COLUMN IF NOT EXISTS image_path TEXT
+  `)
+
   for (const cat of SEED_CATEGORIES) {
     await query(
       `INSERT INTO categories (name, slug, sort_order)
