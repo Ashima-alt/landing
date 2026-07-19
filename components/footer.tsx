@@ -33,14 +33,6 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/#about"
-                  className="text-cream/70 hover:text-gold transition-colors text-sm"
-                >
-                  О бренде
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/#categories"
                   className="text-cream/70 hover:text-gold transition-colors text-sm"
                 >
@@ -63,14 +55,6 @@ export function Footer() {
               Информация
             </h4>
             <ul className="space-y-4">
-              <li>
-                <Link
-                  href="#"
-                  className="text-cream/70 hover:text-gold transition-colors text-sm"
-                >
-                  О бренде
-                </Link>
-              </li>
               <li>
                 <Link
                   href="#"

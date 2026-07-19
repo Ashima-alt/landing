@@ -58,15 +58,6 @@ export function Header() {
               Каталог
             </Link>
             <Link
-              href="/#about"
-              className={cn(
-                "text-sm tracking-widest uppercase transition-colors duration-300 hover:text-gold",
-                solid ? "text-sage" : "text-cream/90"
-              )}
-            >
-              О бренде
-            </Link>
-            <Link
               href="/#categories"
               className={cn(
                 "text-sm tracking-widest uppercase transition-colors duration-300 hover:text-gold",
@@ -138,11 +129,11 @@ export function Header() {
               Каталог
             </Link>
             <Link
-              href="/#about"
+              href="/#categories"
               onClick={() => setIsMobileMenuOpen(false)}
               className="font-serif text-3xl text-cream hover:text-gold transition-colors"
             >
-              О бренде
+              Категории
             </Link>
             <Link
               href="/#contact"
