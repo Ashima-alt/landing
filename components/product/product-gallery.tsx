@@ -100,9 +100,6 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
 
       {images.length > 1 && (
         <>
-          <p className="text-sage-light text-xs tracking-wider uppercase">
-            Водите мышью по фото · {selected + 1} / {images.length}
-          </p>
           <div className="flex gap-1.5 mb-1">
             {images.map((image, i) => (
               <span
