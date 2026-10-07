@@ -50,7 +50,7 @@ jobs:
             ssh "${ssh_args[@]}" root@91.229.11.9 'set -e
           whoami
           hostname
-          git -C /var/www/landing rev-parse --short HEAD
+          git -c safe.directory=/var/www/landing -C /var/www/landing rev-parse --short HEAD
           pm2 status'
             exit 0
           fi
@@ -63,6 +63,8 @@ jobs:
           [[ "$target" =~ ^[0-9a-f]{40}$ ]]
           cd /var/www/landing
           for tool in git node npm pm2 curl tar; do command -v "$tool" >/dev/null; done
+          # Trust this user-designated checkout for these commands only.
+          git() { command git -c safe.directory=/var/www/landing "$@"; }
           [[ "$(git branch --show-current)" == main ]]
           [[ -z "$(git status --porcelain --untracked-files=normal)" ]]
           [[ -d .next && -d node_modules ]]
