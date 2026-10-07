@@ -51,7 +51,7 @@ jobs:
           whoami
           hostname
           git -c safe.directory=/var/www/landing -C /var/www/landing rev-parse --short HEAD
-          pm2 status'
+          sudo -n -u deploy -H env PM2_HOME=/home/deploy/.pm2 pm2 status'
             exit 0
           fi
 
@@ -62,9 +62,11 @@ jobs:
           target=$1
           [[ "$target" =~ ^[0-9a-f]{40}$ ]]
           cd /var/www/landing
-          for tool in git node npm pm2 curl tar; do command -v "$tool" >/dev/null; done
+          for tool in git node npm sudo curl tar; do command -v "$tool" >/dev/null; done
           # Trust this user-designated checkout for these commands only.
           git() { command git -c safe.directory=/var/www/landing "$@"; }
+          # Use the application's existing PM2 daemon and Unix user.
+          pm2() { sudo -n -u deploy -H env PM2_HOME=/home/deploy/.pm2 pm2 "$@"; }
           [[ "$(git branch --show-current)" == main ]]
           [[ -z "$(git status --porcelain --untracked-files=normal)" ]]
           [[ -d .next && -d node_modules ]]
@@ -138,6 +140,8 @@ jobs:
             npm ci --include=dev --no-audit --no-fund
             NEXT_TELEMETRY_DISABLED=1 NEXT_TURBOPACK_EXPERIMENTAL_USE_SYSTEM_TLS_CERTS=1 npm run build
           )
+          # The running Next.js process must be able to read the new artifacts.
+          chown -R "deploy:$(id -gn deploy)" "$build_dir/.next" "$build_dir/node_modules"
 
           # Recheck for intervening changes before switching the running website.
           [[ "$(git rev-parse HEAD)" == "$previous" ]]
