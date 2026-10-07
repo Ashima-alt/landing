@@ -1,0 +1,169 @@
+name: Production website
+
+'on':
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Check access or deploy the website
+        type: choice
+        options: [check, deploy]
+        default: check
+        required: true
+      commit:
+        description: Full commit SHA from main to deploy
+        type: string
+        default: 8c51419029adf11524fb5c17304827bbd56b9617
+        required: true
+
+permissions: {}
+
+concurrency:
+  group: production-website
+  cancel-in-progress: false
+
+jobs:
+  production:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      DEPLOY_MODE: ${{ inputs.mode }}
+      TARGET_COMMIT: ${{ inputs.commit }}
+      DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+    steps:
+      - name: Check access or deploy the selected commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$DEPLOY_MODE" == check || "$DEPLOY_MODE" == deploy ]]
+          [[ "$TARGET_COMMIT" =~ ^[0-9a-f]{40}$ ]]
+          : "${DEPLOY_SSH_KEY:?Add the DEPLOY_SSH_KEY repository Actions secret}"
+          umask 077
+          ssh_dir=$(mktemp -d "$RUNNER_TEMP/production-ssh.XXXXXX")
+          trap 'rm -rf -- "$ssh_dir"' EXIT
+          printf '%s\n' "$DEPLOY_SSH_KEY" > "$ssh_dir/key"
+          printf '%s\n' '91.229.11.9 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOb5obnnnegBkWz9z5Vr2N4w+vsXwwA3KiyUVtCtlohp' > "$ssh_dir/known_hosts"
+          ssh_args=(-F /dev/null -i "$ssh_dir/key" -p 22
+            -o BatchMode=yes -o IdentitiesOnly=yes -o ConnectTimeout=15
+            -o StrictHostKeyChecking=yes -o "UserKnownHostsFile=$ssh_dir/known_hosts")
+
+          if [[ "$DEPLOY_MODE" == check ]]; then
+            ssh "${ssh_args[@]}" root@91.229.11.9 'set -e
+          whoami
+          hostname
+          git -C /var/www/landing rev-parse --short HEAD
+          pm2 status'
+            exit 0
+          fi
+
+          printf 'Requested production commit: `%s`\n' "$TARGET_COMMIT" >> "$GITHUB_STEP_SUMMARY"
+          ssh "${ssh_args[@]}" root@91.229.11.9 bash -s -- "$TARGET_COMMIT" <<'REMOTE'
+          set -euo pipefail
+          umask 077
+          target=$1
+          [[ "$target" =~ ^[0-9a-f]{40}$ ]]
+          cd /var/www/landing
+          for tool in git node npm pm2 curl tar; do command -v "$tool" >/dev/null; done
+          [[ "$(git branch --show-current)" == main ]]
+          [[ -z "$(git status --porcelain --untracked-files=normal)" ]]
+          [[ -d .next && -d node_modules ]]
+          pm2 describe landing >/dev/null
+
+          # Verify repository identity without displaying credentials in its URL.
+          git remote get-url origin | node -e '
+            let text = "";
+            process.stdin.on("data", chunk => text += chunk);
+            process.stdin.on("end", () => {
+              const remote = text.trim();
+              let host, path;
+              if (remote.startsWith("git@github.com:")) {
+                host = "github.com";
+                path = remote.slice("git@github.com:".length);
+              } else {
+                const url = new URL(remote);
+                host = url.hostname;
+                path = url.pathname.replace(/^\//, "");
+              }
+              if (host !== "github.com" || path.replace(/\.git$/, "") !== "Ashima-alt/landing") {
+                console.error("Production origin must identify Ashima-alt/landing; no changes made.");
+                process.exitCode = 1;
+              }
+            });'
+          previous=$(git rev-parse HEAD)
+          git fetch --no-tags origin main
+          git merge-base --is-ancestor "$target" FETCH_HEAD
+          git merge-base --is-ancestor "$previous" "$target"
+          printf 'Current: %s\nTarget: %s\nChanged files:\n' "$previous" "$target"
+          git diff --name-only "$previous" "$target"
+          if [[ -n "$(git diff --name-only "$previous" "$target" -- server deploy)" ]]; then
+            echo 'This workflow deploys the frontend only; API/deployment-script changes require a separate deployment.' >&2
+            exit 1
+          fi
+          if [[ "$previous" == "$target" ]]; then
+            echo 'The selected commit is already deployed.'
+            exit 0
+          fi
+
+          build_dir=$(mktemp -d /var/www/landing-build.XXXXXX)
+          deployment_started=0
+          cleanup() {
+            result=$?
+            trap - EXIT
+            if [[ "$result" -ne 0 && "$deployment_started" == 1 ]]; then
+              echo 'Deployment failed; attempting to restore the previous frontend.' >&2
+              pm2 stop landing || true
+              git reset --keep "$previous" || echo 'Could not restore Git HEAD; manual recovery is required.' >&2
+              if [[ -d "$build_dir/old-next" ]]; then
+                rm -rf -- .next
+                mv "$build_dir/old-next" .next
+              fi
+              if [[ -d "$build_dir/old-node_modules" ]]; then
+                rm -rf -- node_modules
+                mv "$build_dir/old-node_modules" node_modules
+              fi
+              pm2 restart landing || echo 'Could not restart the previous frontend; manual recovery is required.' >&2
+            fi
+            rm -rf -- "$build_dir"
+            exit "$result"
+          }
+          trap cleanup EXIT
+          trap 'exit 130' HUP INT TERM
+          git archive "$target" | tar -x -C "$build_dir"
+          for file in .env .env.local .env.production .env.production.local; do
+            if [[ -f "$file" ]]; then cp -p "$file" "$build_dir/$file"; fi
+          done
+          (
+            cd "$build_dir"
+            npm ci --include=dev --no-audit --no-fund
+            NEXT_TELEMETRY_DISABLED=1 NEXT_TURBOPACK_EXPERIMENTAL_USE_SYSTEM_TLS_CERTS=1 npm run build
+          )
+
+          # Recheck for intervening changes before switching the running website.
+          [[ "$(git rev-parse HEAD)" == "$previous" ]]
+          [[ -z "$(git status --porcelain --untracked-files=normal)" ]]
+          deployment_started=1
+          pm2 stop landing
+          git merge --ff-only "$target"
+          mv .next "$build_dir/old-next"
+          mv node_modules "$build_dir/old-node_modules"
+          mv "$build_dir/.next" .next
+          mv "$build_dir/node_modules" node_modules
+          pm2 restart landing
+
+          ready=0
+          for attempt in {1..30}; do
+            if curl --fail --silent --show-error --max-time 5 http://127.0.0.1:3000/ > "$build_dir/home.html" \
+              && grep -q 'Valore Milano' "$build_dir/home.html" \
+              && curl --fail --silent --show-error --max-time 5 http://127.0.0.1:3000/catalog > /dev/null \
+              && curl --fail --silent --show-error --max-time 5 http://127.0.0.1:3000/api/health > "$build_dir/health.json" \
+              && node -e 'if(JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")).ok !== true) process.exit(1)' "$build_dir/health.json"; then
+              ready=1
+              break
+            fi
+            sleep 1
+          done
+          [[ "$ready" == 1 ]]
+          [[ "$(git rev-parse HEAD)" == "$target" ]]
+          [[ -z "$(git status --porcelain --untracked-files=normal)" ]]
+          printf 'DEPLOYED_COMMIT=%s\n' "$target"
+          pm2 status
+          REMOTE
