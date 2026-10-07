@@ -72,28 +72,9 @@ jobs:
           [[ -d .next && -d node_modules ]]
           pm2 describe landing >/dev/null
 
-          # Verify repository identity without displaying credentials in its URL.
-          git remote get-url origin | node -e '
-            let text = "";
-            process.stdin.on("data", chunk => text += chunk);
-            process.stdin.on("end", () => {
-              const remote = text.trim();
-              let host, path;
-              if (remote.startsWith("git@github.com:")) {
-                host = "github.com";
-                path = remote.slice("git@github.com:".length);
-              } else {
-                const url = new URL(remote);
-                host = url.hostname;
-                path = url.pathname.replace(/^\//, "");
-              }
-              if (host !== "github.com" || path.replace(/\.git$/, "") !== "Ashima-alt/landing") {
-                console.error("Production origin must identify Ashima-alt/landing; no changes made.");
-                process.exitCode = 1;
-              }
-            });'
           previous=$(git rev-parse HEAD)
-          git fetch --no-tags origin main
+          # Fetch from the authorized public repository without changing origin.
+          git fetch --no-tags https://github.com/Ashima-alt/landing.git main
           git merge-base --is-ancestor "$target" FETCH_HEAD
           git merge-base --is-ancestor "$previous" "$target"
           printf 'Current: %s\nTarget: %s\nChanged files:\n' "$previous" "$target"
@@ -102,11 +83,13 @@ jobs:
             echo 'This workflow deploys the frontend only; API/deployment-script changes require a separate deployment.' >&2
             exit 1
           fi
-          if [[ "$previous" == "$target" ]]; then
-            echo 'The selected commit is already deployed.'
-            exit 0
-          fi
-
+          # Rebuild even when HEAD already matches: source HEAD is not proof of
+          # the commit used by the currently running production build.
+          node --version
+          npm --version
+          df -h /var/www
+          free -h
+          nproc
           build_dir=$(mktemp -d /var/www/landing-build.XXXXXX)
           deployment_started=0
           cleanup() {
