@@ -48,7 +48,7 @@ export function ProductCardMedia({
         src={src}
         alt={product.title}
         fill
-        className="object-cover transition-opacity duration-200"
+        className="object-contain object-center p-3 transition-opacity duration-200"
         sizes={sizes}
       />
       {showOverlay && (
