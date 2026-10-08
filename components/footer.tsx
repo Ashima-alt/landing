@@ -3,8 +3,8 @@ import Link from "next/link"
 export function Footer() {
   return (
     <footer id="contact" className="bg-sage-dark text-cream">
-      <div className="container mx-auto px-6 lg:px-12 py-20">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
+      <div className="container mx-auto px-6 lg:px-12 py-14 md:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-10">
           {/* Brand */}
           <div className="md:col-span-1">
             <Link href="/" className="inline-block">
@@ -13,7 +13,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-6 text-cream/60 text-sm leading-relaxed">
-              Итальянское мастерство в каждой детали. Создаем посуду, которая превращает каждый прием пищи в особенный момент.
+              Посуда и аксессуары для кухни и сервировки. Внимание к деталям каждый день.
             </p>
           </div>
 
@@ -33,10 +33,10 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/#categories"
+                  href="/#about"
                   className="text-cream/70 hover:text-gold transition-colors text-sm"
                 >
-                  Категории
+                  О бренде
                 </Link>
               </li>
               <li>
@@ -122,7 +122,7 @@ export function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="mt-16 pt-8 border-t border-cream/10 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="mt-12 pt-6 border-t border-cream/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-cream/40 text-xs tracking-wider">
             © 2026 Valore Milano. Все права защищены.
           </p>
