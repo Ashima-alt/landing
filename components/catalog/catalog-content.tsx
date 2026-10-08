@@ -198,7 +198,7 @@ export function CatalogContent() {
                   <Link href={`/product/${product.id}`} className="block">
                     <ProductCardMedia
                       product={product}
-                      className="catalog-product-media isolate mb-6 bg-cream [&_img]:mix-blend-multiply"
+                      className="isolate mb-6 bg-cream [&_img]:mix-blend-multiply"
                       sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
                     />
                     <h3 className="font-serif text-xl leading-snug text-sage-dark mb-2 group-hover:text-gold transition-colors">

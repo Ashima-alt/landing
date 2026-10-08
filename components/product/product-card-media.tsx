@@ -40,7 +40,7 @@ export function ProductCardMedia({
 
   return (
     <div
-      className={cn("relative aspect-square overflow-hidden bg-cream-dark", className)}
+      className={cn("product-card-media relative aspect-square overflow-hidden bg-cream-dark", className)}
       onMouseMove={onMove}
       onMouseLeave={() => setIndex(0)}
     >
