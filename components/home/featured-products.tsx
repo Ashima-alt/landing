@@ -21,7 +21,7 @@ export function FeaturedProducts() {
         <div className="text-center mb-16 md:mb-20">
           <span className="text-gold text-xs tracking-[0.4em] uppercase">Коллекция</span>
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-sage-dark mt-4 text-balance">
-            Популярные изделия
+            Для кухни и сервировки
           </h2>
           <div className="w-16 h-px bg-gold mx-auto mt-8" />
         </div>
@@ -44,8 +44,7 @@ export function FeaturedProducts() {
                 <Link href={`/product/${product.id}`} className="block">
                   <ProductCardMedia
                     product={product}
-                    className="mb-6"
-                    showOverlay
+                    className="isolate mb-6 bg-cream [&_img]:mix-blend-multiply"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   />
                   <div className="text-center">
