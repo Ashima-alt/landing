@@ -346,7 +346,7 @@ function SettingsTab() {
         </section>
 
         {/* Save Button */}
-        <button className="bg-gold hover:bg-gold-dark text-sage-dark px-8 py-3 text-sm tracking-widest uppercase transition-colors">
+        <button className="bg-gold hover:bg-gold-dark text-cream px-8 py-3 text-sm tracking-widest uppercase transition-colors">
           Сохранить
         </button>
       </div>

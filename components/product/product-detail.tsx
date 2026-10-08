@@ -113,7 +113,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
             )}
           </div>
 
-          <div className="w-16 h-px bg-gold mb-8" />
+          <div className="w-16 h-px bg-brand-yellow mb-8" />
 
           <div className="text-sage leading-relaxed whitespace-pre-line">
             {product.description || "Описание скоро появится."}

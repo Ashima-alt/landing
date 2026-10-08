@@ -44,7 +44,7 @@ export function Header() {
             >
               Valore Milano
             </span>
-            <span className="absolute -bottom-1 left-0 w-0 h-px bg-gold transition-all duration-300 group-hover:w-full" />
+            <span className="absolute -bottom-1 left-0 w-0 h-px bg-brand-yellow transition-all duration-300 group-hover:w-full" />
           </Link>
 
           <div className="flex items-center gap-6">
@@ -52,8 +52,8 @@ export function Header() {
               <Link
                 href="/catalog"
                 className={cn(
-                  "text-xs tracking-widest uppercase transition-colors duration-300 hover:text-gold",
-                  solid ? "text-sage" : "text-cream/90"
+                  "text-xs tracking-widest uppercase transition-colors duration-300",
+                  solid ? "text-sage hover:text-brand-blue" : "text-cream/90 hover:text-brand-yellow"
                 )}
               >
                 Каталог
@@ -61,8 +61,8 @@ export function Header() {
               <Link
                 href="/#about"
                 className={cn(
-                  "text-xs tracking-widest uppercase transition-colors duration-300 hover:text-gold",
-                  solid ? "text-sage" : "text-cream/90"
+                  "text-xs tracking-widest uppercase transition-colors duration-300",
+                  solid ? "text-sage hover:text-brand-blue" : "text-cream/90 hover:text-brand-yellow"
                 )}
               >
                 О бренде
@@ -70,8 +70,8 @@ export function Header() {
               <Link
                 href="/#contact"
                 className={cn(
-                  "text-xs tracking-widest uppercase transition-colors duration-300 hover:text-gold",
-                  solid ? "text-sage" : "text-cream/90"
+                  "text-xs tracking-widest uppercase transition-colors duration-300",
+                  solid ? "text-sage hover:text-brand-blue" : "text-cream/90 hover:text-brand-yellow"
                 )}
               >
                 Контакты
@@ -99,7 +99,7 @@ export function Header() {
         aria-hidden={!isMobileMenuOpen}
         inert={!isMobileMenuOpen}
         className={cn(
-          "fixed inset-0 bg-sage-dark z-50 transition-all duration-500 md:hidden",
+          "fixed inset-0 bg-brand-blue z-50 transition-all duration-500 md:hidden",
           isMobileMenuOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
@@ -123,28 +123,28 @@ export function Header() {
             <Link
               href="/"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="font-serif text-3xl text-cream hover:text-gold transition-colors"
+              className="font-serif text-3xl text-cream hover:text-brand-yellow transition-colors"
             >
               Главная
             </Link>
             <Link
               href="/catalog"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="font-serif text-3xl text-cream hover:text-gold transition-colors"
+              className="font-serif text-3xl text-cream hover:text-brand-yellow transition-colors"
             >
               Каталог
             </Link>
             <Link
               href="/#about"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="font-serif text-3xl text-cream hover:text-gold transition-colors"
+              className="font-serif text-3xl text-cream hover:text-brand-yellow transition-colors"
             >
               О бренде
             </Link>
             <Link
               href="/#contact"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="font-serif text-3xl text-cream hover:text-gold transition-colors"
+              className="font-serif text-3xl text-cream hover:text-brand-yellow transition-colors"
             >
               Контакты
             </Link>

@@ -30,7 +30,7 @@ export function HeroSection() {
         </p>
         <Link
           href="/catalog"
-          className="group inline-flex items-center gap-3 bg-gold hover:bg-gold-dark text-sage-dark px-7 py-4 text-xs tracking-widest uppercase transition-colors duration-300"
+          className="group inline-flex items-center gap-3 bg-brand-blue hover:bg-brand-blue-dark text-cream px-7 py-4 text-xs tracking-widest uppercase transition-colors duration-300"
         >
           Смотреть каталог
           <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

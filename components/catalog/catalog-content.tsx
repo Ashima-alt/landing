@@ -143,7 +143,7 @@ export function CatalogContent() {
         <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl leading-tight text-sage-dark mt-4">
           Каталог
         </h1>
-        <div className="w-16 h-px bg-gold mx-auto mt-6" />
+        <div className="w-16 h-px bg-brand-yellow mx-auto mt-6" />
       </div>
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 pb-8 border-b border-border/50">

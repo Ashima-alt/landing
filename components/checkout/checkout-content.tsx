@@ -29,7 +29,7 @@ export function CheckoutContent() {
           </p>
           <Link
             href="/catalog"
-            className="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-sage-dark px-8 py-4 text-sm tracking-widest uppercase transition-colors"
+            className="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-cream px-8 py-4 text-sm tracking-widest uppercase transition-colors"
           >
             Перейти в каталог
             <ArrowRight className="w-4 h-4" />
@@ -57,7 +57,7 @@ export function CheckoutContent() {
           </p>
           <Link
             href="/profile"
-            className="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-sage-dark px-8 py-4 text-sm tracking-widest uppercase transition-colors"
+            className="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-cream px-8 py-4 text-sm tracking-widest uppercase transition-colors"
           >
             Мои заказы
             <ArrowRight className="w-4 h-4" />
@@ -290,7 +290,7 @@ export function CheckoutContent() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-gold hover:bg-gold-dark disabled:bg-gold/50 text-sage-dark py-4 text-sm tracking-widest uppercase flex items-center justify-center gap-2 transition-colors gold-glow"
+                className="w-full bg-gold hover:bg-gold-dark disabled:bg-gold/50 text-cream py-4 text-sm tracking-widest uppercase flex items-center justify-center gap-2 transition-colors gold-glow"
               >
                 {isSubmitting ? (
                   <div className="w-5 h-5 border-2 border-sage-dark/30 border-t-sage-dark rounded-full animate-spin" />

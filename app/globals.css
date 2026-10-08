@@ -4,67 +4,70 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Valore Milano - Luxury Italian Tableware Theme */
-  --background: #F5F3EF; /* Creamy white */
-  --foreground: #2A2A2A; /* Dark charcoal */
+  /* Screen approximations from the packaging Color Guide.
+     Legacy cream/sage/gold utilities keep their existing layout roles. */
+  --brand-blue: #273A97; /* PANTONE P 99-8 C */
+  --brand-blue-dark: #1E2D75;
+  --brand-yellow: #FFD64D; /* PANTONE P 7-7 C */
+  --brand-grey-light: #C3C5C7; /* PANTONE P 179-4 C */
+  --brand-grey: #B7B9BB; /* PANTONE P 179-5 C */
+  --brand-grey-dark: #8C8E91; /* PANTONE P 179-8 C */
+  --brand-black: #212121; /* PANTONE Hexachrome Black C */
+  --background: #FFFFFF;
+  --foreground: var(--brand-black);
   --card: #FFFFFF;
-  --card-foreground: #2A2A2A;
+  --card-foreground: var(--brand-black);
   --popover: #FFFFFF;
-  --popover-foreground: #2A2A2A;
-  --primary: #5A5F5A; /* Deep gray-green */
-  --primary-foreground: #F5F3EF;
-  --secondary: #F5F3EF;
-  --secondary-foreground: #5A5F5A;
-  --muted: #E8E6E1;
-  --muted-foreground: #6B6B6B;
-  --accent: #C9A96E; /* Soft gold */
-  --accent-foreground: #2A2A2A;
+  --popover-foreground: var(--brand-black);
+  --primary: var(--brand-blue);
+  --primary-foreground: #FFFFFF;
+  --secondary: #F3F4F6;
+  --secondary-foreground: var(--brand-black);
+  --muted: #F3F4F6;
+  --muted-foreground: #62666D;
+  --accent: var(--brand-yellow);
+  --accent-foreground: var(--brand-black);
   --destructive: #B85450;
   --destructive-foreground: #FFFFFF;
-  --border: #D4D2CD;
-  --input: #E8E6E1;
-  --ring: #C9A96E;
-  --chart-1: #C9A96E;
-  --chart-2: #5A5F5A;
-  --chart-3: #8B8F8B;
-  --chart-4: #D4C4A8;
-  --chart-5: #3D403D;
+  --border: var(--brand-grey-light);
+  --input: #F3F4F6;
+  --ring: var(--brand-blue);
+  --chart-1: var(--brand-blue);
+  --chart-2: var(--brand-yellow);
+  --chart-3: var(--brand-grey);
+  --chart-4: var(--brand-grey-light);
+  --chart-5: var(--brand-black);
   --radius: 0.25rem;
-  --gold: #C9A96E;
-  --gold-light: #D4C4A8;
-  --gold-dark: #A68B4E;
-  --sage: #5A5F5A;
-  --sage-light: #8B8F8B;
-  --sage-dark: #3D403D;
-  --cream: #F5F3EF;
-  --cream-dark: #E8E6E1;
+  --gold: var(--brand-blue);
+  --gold-light: var(--brand-grey-light);
+  --gold-dark: var(--brand-blue-dark);
+  --sage: #595B60;
+  --sage-light: #62666D;
+  --sage-dark: var(--brand-black);
+  --cream: #FFFFFF;
+  --cream-dark: #F3F4F6;
 }
 
 .dark {
-  --background: #1A1A1A;
-  --foreground: #F5F3EF;
-  --card: #2A2A2A;
-  --card-foreground: #F5F3EF;
-  --popover: #2A2A2A;
-  --popover-foreground: #F5F3EF;
-  --primary: #C9A96E;
-  --primary-foreground: #1A1A1A;
-  --secondary: #3D403D;
-  --secondary-foreground: #F5F3EF;
-  --muted: #3D403D;
-  --muted-foreground: #A0A0A0;
-  --accent: #C9A96E;
-  --accent-foreground: #1A1A1A;
+  --background: #15171E;
+  --foreground: #FFFFFF;
+  --card: var(--brand-black);
+  --card-foreground: #FFFFFF;
+  --popover: var(--brand-black);
+  --popover-foreground: #FFFFFF;
+  --primary: var(--brand-yellow);
+  --primary-foreground: var(--brand-black);
+  --secondary: #30323A;
+  --secondary-foreground: #FFFFFF;
+  --muted: #30323A;
+  --muted-foreground: var(--brand-grey-light);
+  --accent: var(--brand-blue);
+  --accent-foreground: #FFFFFF;
   --destructive: #B85450;
   --destructive-foreground: #FFFFFF;
-  --border: #3D403D;
-  --input: #3D403D;
-  --ring: #C9A96E;
-  --chart-1: #C9A96E;
-  --chart-2: #8B8F8B;
-  --chart-3: #5A5F5A;
-  --chart-4: #D4C4A8;
-  --chart-5: #F5F3EF;
+  --border: #595B60;
+  --input: #30323A;
+  --ring: var(--brand-yellow);
 }
 
 @theme inline {
@@ -95,6 +98,9 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-blue-dark: var(--brand-blue-dark);
+  --color-brand-yellow: var(--brand-yellow);
   --color-gold: var(--gold);
   --color-gold-light: var(--gold-light);
   --color-gold-dark: var(--gold-dark);
@@ -200,7 +206,7 @@
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(201, 169, 110, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(39, 58, 151, 0.1), transparent);
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
@@ -253,18 +259,18 @@
 
 /* Gold button glow */
 .gold-glow {
-  box-shadow: 0 0 0 0 rgba(201, 169, 110, 0);
+  box-shadow: 0 0 0 0 rgba(39, 58, 151, 0);
   transition: box-shadow 0.3s ease;
 }
 
 .gold-glow:hover {
-  box-shadow: 0 0 20px 0 rgba(201, 169, 110, 0.3);
+  box-shadow: 0 0 20px 0 rgba(39, 58, 151, 0.3);
 }
 
 /* Text selection */
 ::selection {
-  background: rgba(201, 169, 110, 0.3);
-  color: #2A2A2A;
+  background: rgba(255, 214, 77, 0.35);
+  color: var(--brand-black);
 }
 
 /* Scrollbar styling */
