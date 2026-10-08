@@ -140,13 +140,13 @@ export function CatalogContent() {
     <div className="container mx-auto px-6 lg:px-12 pb-24">
       <div className="text-center mb-12 md:mb-16">
         <span className="text-gold text-xs tracking-[0.4em] uppercase">Коллекция</span>
-        <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl text-sage-dark mt-4">
+        <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl leading-tight text-sage-dark mt-4">
           Каталог
         </h1>
         <div className="w-16 h-px bg-gold mx-auto mt-6" />
       </div>
 
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 pb-8 border-b border-border">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 pb-8 border-b border-border/50">
         <p className="text-sage-light text-sm">
           {loading
             ? "Загрузка…"
@@ -188,7 +188,7 @@ export function CatalogContent() {
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-12 md:gap-y-16">
               {products.map((product, index) => (
                 <article
                   key={product.id}
@@ -198,10 +198,10 @@ export function CatalogContent() {
                   <Link href={`/product/${product.id}`} className="block">
                     <ProductCardMedia
                       product={product}
-                      className="mb-5"
+                      className="isolate mb-6 bg-cream [&_img]:mix-blend-multiply"
                       sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
                     />
-                    <h3 className="font-serif text-xl text-sage-dark mb-1 group-hover:text-gold transition-colors">
+                    <h3 className="font-serif text-xl leading-snug text-sage-dark mb-2 group-hover:text-gold transition-colors">
                       {product.title}
                     </h3>
                     <p className="text-sage-light text-xs tracking-wider mb-2">
