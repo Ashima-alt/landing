@@ -1,78 +1,90 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import './styles/header.css';
+@import './styles/footer.css';
+@import './styles/hero.css';
+@import './styles/featured.css';
+@import './styles/brand.css';
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Screen approximations from the packaging Color Guide.
-     Legacy cream/sage/gold utilities keep their existing layout roles. */
-  --brand-blue: #273A97; /* PANTONE P 99-8 C */
-  --brand-blue-dark: #1E2D75;
-  --brand-yellow: #FFD64D; /* PANTONE P 7-7 C */
-  --brand-grey-light: #C3C5C7; /* PANTONE P 179-4 C */
-  --brand-grey: #B7B9BB; /* PANTONE P 179-5 C */
-  --brand-grey-dark: #8C8E91; /* PANTONE P 179-8 C */
-  --brand-black: #212121; /* PANTONE Hexachrome Black C */
+  /* Pantone 425 C is the owner's approved screen reference, not a print match.
+     Gold is decorative; graphite carries text, actions and focus states. */
+  --brand-graphite: #54585A;
+  --brand-charcoal: #272B2D;
+  --brand-paper: #FFFFFF;
+  --brand-surface: #F6F6F3;
+  --brand-gold: #A38C63;
+  --brand-gold-light: #D7C9A8;
+  --brand-gold-dark: #87714E;
+  --brand-black: var(--brand-charcoal);
   --background: #FFFFFF;
   --foreground: var(--brand-black);
   --card: #FFFFFF;
   --card-foreground: var(--brand-black);
   --popover: #FFFFFF;
   --popover-foreground: var(--brand-black);
-  --primary: var(--brand-blue);
+  --primary: var(--brand-graphite);
   --primary-foreground: #FFFFFF;
-  --secondary: #F3F4F6;
+  --secondary: var(--brand-surface);
   --secondary-foreground: var(--brand-black);
-  --muted: #F3F4F6;
-  --muted-foreground: #62666D;
-  --accent: var(--brand-yellow);
+  --muted: var(--brand-surface);
+  --muted-foreground: #6D7173;
+  --accent: #EEE9DF;
   --accent-foreground: var(--brand-black);
   --destructive: #B85450;
   --destructive-foreground: #FFFFFF;
-  --border: var(--brand-grey-light);
-  --input: #F3F4F6;
-  --ring: var(--brand-blue);
-  --chart-1: var(--brand-blue);
-  --chart-2: var(--brand-yellow);
-  --chart-3: var(--brand-grey);
-  --chart-4: var(--brand-grey-light);
+  --border: #DDE0DF;
+  --input: var(--brand-surface);
+  --ring: var(--brand-graphite);
+  --chart-1: var(--brand-graphite);
+  --chart-2: var(--brand-gold);
+  --chart-3: #8C9091;
+  --chart-4: #DDE0DF;
   --chart-5: var(--brand-black);
-  --radius: 0.25rem;
-  --gold: var(--brand-blue);
-  --gold-light: var(--brand-grey-light);
-  --gold-dark: var(--brand-blue-dark);
-  --sage: #595B60;
-  --sage-light: #62666D;
+  --radius: 0.125rem;
+  /* Preserve existing utility names for dormant components. */
+  --gold: var(--brand-gold);
+  --gold-light: var(--brand-gold-light);
+  --gold-dark: var(--brand-gold-dark);
+  --sage: var(--brand-graphite);
+  --sage-light: var(--muted-foreground);
   --sage-dark: var(--brand-black);
   --cream: #FFFFFF;
-  --cream-dark: #F3F4F6;
+  --cream-dark: var(--brand-surface);
+  --content-max: 1320px;
+  --section-space: clamp(4.5rem, 7.5vw, 7.5rem);
+  --header-height: 88px;
+  --motion-duration: 180ms;
+  --font-editorial: var(--font-playfair), Georgia, serif;
 }
 
 .dark {
-  --background: #15171E;
+  --background: #202426;
   --foreground: #FFFFFF;
   --card: var(--brand-black);
   --card-foreground: #FFFFFF;
   --popover: var(--brand-black);
   --popover-foreground: #FFFFFF;
-  --primary: var(--brand-yellow);
+  --primary: #ECEDEB;
   --primary-foreground: var(--brand-black);
-  --secondary: #30323A;
+  --secondary: #353A3C;
   --secondary-foreground: #FFFFFF;
-  --muted: #30323A;
-  --muted-foreground: var(--brand-grey-light);
-  --accent: var(--brand-blue);
+  --muted: #353A3C;
+  --muted-foreground: #BCC0BF;
+  --accent: #403C34;
   --accent-foreground: #FFFFFF;
   --destructive: #B85450;
   --destructive-foreground: #FFFFFF;
-  --border: #595B60;
-  --input: #30323A;
-  --ring: var(--brand-yellow);
+  --border: #565C5E;
+  --input: #353A3C;
+  --ring: #ECEDEB;
 }
 
 @theme inline {
-  --font-sans: 'Inter', 'Inter Fallback', system-ui, sans-serif;
-  --font-serif: 'Playfair Display', 'Playfair Display Fallback', Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-serif: var(--font-playfair), Georgia, serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback', monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -98,9 +110,9 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --color-brand-blue: var(--brand-blue);
-  --color-brand-blue-dark: var(--brand-blue-dark);
-  --color-brand-yellow: var(--brand-yellow);
+  --color-brand-graphite: var(--brand-graphite);
+  --color-brand-charcoal: var(--brand-charcoal);
+  --color-brand-gold: var(--brand-gold);
   --color-gold: var(--gold);
   --color-gold-light: var(--gold-light);
   --color-gold-dark: var(--gold-dark);
@@ -121,6 +133,14 @@
   }
   body {
     @apply bg-background text-foreground;
+    line-height: 1.6;
+  }
+  :where(a, button, input, textarea, select):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 4px;
+  }
+  :where(h1, h2, h3) {
+    font-weight: 400;
   }
 }
 
@@ -206,7 +226,7 @@
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(39, 58, 151, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(84, 88, 90, 0.06), transparent);
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
@@ -240,8 +260,7 @@
 }
 
 .luxury-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 
 /* Image zoom on hover */
@@ -257,19 +276,18 @@
   transform: scale(1.05);
 }
 
-/* Gold button glow */
+/* Legacy action utility: feedback through colour, without decorative glow. */
 .gold-glow {
-  box-shadow: 0 0 0 0 rgba(39, 58, 151, 0);
-  transition: box-shadow 0.3s ease;
+  transition: background-color var(--motion-duration) ease;
 }
 
 .gold-glow:hover {
-  box-shadow: 0 0 20px 0 rgba(39, 58, 151, 0.3);
+  box-shadow: none;
 }
 
 /* Text selection */
 ::selection {
-  background: rgba(255, 214, 77, 0.35);
+  background: #E5DFD2;
   color: var(--brand-black);
 }
 
@@ -289,4 +307,63 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--sage);
+}
+
+/* Shared composition, typography and interactive treatments. */
+@layer components {
+.vm-shell {
+  width: min(calc(100% - 3rem), var(--content-max));
+  margin-inline: auto;
+}
+.vm-section { padding-block: var(--section-space); }
+.vm-page { padding-top: calc(var(--header-height) + clamp(2.5rem, 5vw, 5rem)); }
+.vm-page-heading, .vm-heading, .vm-display {
+  font-family: var(--font-editorial);
+  font-weight: 400;
+  color: var(--foreground);
+  text-wrap: balance;
+}
+.vm-page-heading { font-size: clamp(2.375rem, 4.5vw, 4.25rem); line-height: 1.12; letter-spacing: -.035em; }
+.vm-heading { font-size: clamp(2rem, 3.4vw, 3.5rem); line-height: 1.18; letter-spacing: -.025em; }
+.vm-display { font-size: clamp(3rem, 5.6vw, 5.25rem); line-height: 1.09; letter-spacing: -.045em; }
+.vm-eyebrow { font-size: .6875rem; font-weight: 500; line-height: 1.6; letter-spacing: .2em; text-transform: uppercase; color: var(--primary); }
+.vm-body { font-size: clamp(.9375rem, 1.1vw, 1.0625rem); line-height: 1.85; color: var(--brand-graphite); }
+.vm-meta { font-size: .75rem; line-height: 1.65; letter-spacing: .035em; color: var(--muted-foreground); }
+.vm-card-title { font-family: var(--font-editorial); font-weight: 400; font-size: clamp(1.125rem, 1.5vw, 1.375rem); line-height: 1.45; color: var(--foreground); text-wrap: pretty; }
+.vm-button, .vm-button-secondary {
+  display: inline-flex; align-items: center; justify-content: center; gap: .875rem;
+  min-height: 50px; padding: .875rem 1.625rem; border: 1px solid var(--brand-graphite);
+  border-radius: 0; font-size: .6875rem; font-weight: 500; line-height: 1.5;
+  letter-spacing: .13em; text-transform: uppercase;
+  transition: color var(--motion-duration), background-color var(--motion-duration), border-color var(--motion-duration);
+}
+.vm-button { background: var(--brand-graphite); color: #FFF; }
+.vm-button:hover { background: var(--brand-charcoal); border-color: var(--brand-charcoal); }
+.vm-button-secondary { background: transparent; color: var(--brand-charcoal); }
+.vm-button-secondary:hover { background: var(--brand-surface); }
+.vm-button:disabled, .vm-button-secondary:disabled { opacity: .55; cursor: not-allowed; }
+.vm-link {
+  display: inline-flex; align-items: center; gap: .75rem; min-height: 44px;
+  font-size: .6875rem; font-weight: 500; letter-spacing: .13em; text-transform: uppercase;
+  color: var(--brand-graphite); transition: color var(--motion-duration);
+}
+.vm-link:hover { color: var(--brand-charcoal); }
+.vm-link svg, .vm-button svg { transition: transform var(--motion-duration); }
+.vm-link:hover svg, .vm-button:hover svg { transform: translateX(3px); }
+.vm-rule { width: 48px; height: 1px; background: var(--brand-gold); }
+.vm-product-card { min-width: 0; }
+.vm-product-card .vm-card-title { transition: color var(--motion-duration); }
+.vm-product-card:hover .vm-card-title { color: var(--brand-graphite); }
+.vm-product-card .product-card-media { margin-bottom: 1.5rem; }
+
+@media (min-width: 1024px) { .vm-shell { width: min(calc(100% - 6rem), var(--content-max)); } }
+@media (max-width: 767px) {
+  :root { --header-height: 72px; --section-space: 4.5rem; }
+  .vm-shell { width: calc(100% - 2rem); }
+  .vm-display { font-size: clamp(2.75rem, 9vw, 3.75rem); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-scroll-behavior="smooth"] { scroll-behavior: auto; }
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-delay: 0ms !important; }
+}
 }
