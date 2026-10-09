@@ -1,29 +1,46 @@
 "use client"
 
-import Image from "next/image"
-
 export function LifestyleSection() {
   return (
-    <section id="about" className="pt-4 pb-20 md:pt-8 md:pb-28 bg-cream scroll-mt-28">
-      <div className="container mx-auto px-6 lg:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10 lg:gap-20">
-          <div className="max-w-md">
-            <h2 className="font-serif text-3xl md:text-4xl text-sage-dark leading-tight text-balance mb-6">
-              Продумано для повседневной жизни
+    <section id="about" className="vm-story bg-cream">
+      <div className="vm-shell">
+        <div className="vm-story-grid">
+          <figure className="vm-brand-plate" aria-label="Valore Milano">
+            <div className="vm-brand-mark" aria-hidden="true" />
+          </figure>
+          <div className="vm-story-copy">
+            <p className="vm-eyebrow">Философия Valore Milano</p>
+            <h2 className="vm-heading">
+              Ценность в каждой детали
             </h2>
-            <p className="text-sage text-base leading-relaxed">
-              Valore Milano — посуда и аксессуары для кухни и сервировки.
-              Мы ценим простые формы, удобство в повседневных делах и красоту деталей.
+            <p className="vm-body">
+              Valore в переводе с итальянского означает «ценность».
+              Для нас это слово объединяет внимание к качеству,
+              эстетике и удобству повседневной жизни.
+            </p>
+            <p className="vm-body">
+              Нам близки сдержанная итальянская эстетика, спокойные формы
+              и выразительные детали. Мы смотрим на кухню и сервировку
+              как на часть дома — пространство привычных ритуалов,
+              встреч и времени, проведённого вместе.
+            </p>
+            <p className="vm-story-signoff">
+              Дизайн как искусство повседневной жизни.
             </p>
           </div>
-          <div className="relative aspect-[4/3] overflow-hidden">
-            <Image
-              src="/images/lifestyle-dining.jpg"
-              alt="Атмосфера сервировки стола"
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
+        </div>
+        <div className="vm-principles">
+          <div className="vm-principle">
+            <h3>Качество</h3>
+            <p>Внимание к материалам и деталям — основа нашего подхода к продукции.</p>
+          </div>
+          <div className="vm-principle">
+            <h3>Эстетика</h3>
+            <p>Гармония форм и сдержанный стиль, вдохновлённый итальянским дизайном.</p>
+          </div>
+          <div className="vm-principle">
+            <h3>Ценность</h3>
+            <p>Красота и удобство в привычных вещах, которые сопровождают каждый день.</p>
           </div>
         </div>
       </div>
