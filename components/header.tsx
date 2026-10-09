@@ -62,9 +62,9 @@ export function Header() {
     <header className="vm-site-header" data-scrolled={isScrolled}>
       <nav className="vm-shell" aria-label="Основная навигация">
         <div className="flex items-center justify-between">
-          <Link href="/" className="group relative">
+          <Link href="/" className="vm-logo-link group relative">
             <span
-              className="font-serif text-lg sm:text-xl md:text-2xl tracking-[0.2em] md:tracking-[0.3em] uppercase text-sage-dark"
+              className="vm-header-logo font-serif md:text-2xl md:tracking-[0.3em] uppercase text-sage-dark"
             >
               Valore Milano
             </span>
@@ -99,7 +99,7 @@ export function Header() {
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu"
               onClick={() => setIsMobileMenuOpen(true)}
-              className="md:hidden -m-2 p-2 text-sage-dark"
+              className="vm-menu-button md:hidden text-sage-dark"
             >
               <Menu className="w-6 h-6" />
             </button>
@@ -123,45 +123,45 @@ export function Header() {
         )}
       >
         <div className="vm-shell py-6">
-          <div className="flex items-center justify-between mb-16">
-            <span className="font-serif text-lg sm:text-xl tracking-[0.2em] uppercase text-cream">
+          <div className="flex items-center justify-between mb-8 sm:mb-12">
+            <span className="vm-header-logo font-serif uppercase text-cream">
               Valore Milano
             </span>
             <button
               type="button"
               aria-label="Закрыть меню"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="text-cream -m-2 p-2"
+              className="vm-menu-button text-cream"
             >
               <X className="w-6 h-6" />
             </button>
           </div>
-          <nav className="flex flex-col gap-8" aria-label="Мобильная навигация">
+          <nav className="flex flex-col gap-4 sm:gap-6" aria-label="Мобильная навигация">
             <Link
               href="/"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="font-serif text-3xl text-cream transition-colors"
+              className="font-serif text-2xl sm:text-3xl min-h-11 py-1 text-cream transition-colors"
             >
               Главная
             </Link>
             <Link
               href="/catalog"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="font-serif text-3xl text-cream transition-colors"
+              className="font-serif text-2xl sm:text-3xl min-h-11 py-1 text-cream transition-colors"
             >
               Каталог
             </Link>
             <Link
               href="/#about"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="font-serif text-3xl text-cream transition-colors"
+              className="font-serif text-2xl sm:text-3xl min-h-11 py-1 text-cream transition-colors"
             >
               О бренде
             </Link>
             <Link
               href="/#contact"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="font-serif text-3xl text-cream transition-colors"
+              className="font-serif text-2xl sm:text-3xl min-h-11 py-1 text-cream transition-colors"
             >
               Контакты
             </Link>

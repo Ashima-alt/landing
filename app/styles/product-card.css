@@ -1,0 +1,49 @@
+/* Shared product cards: preserve the desktop treatment and compact touch grids. */
+@layer components {
+  .vm-product-card { min-width: 0; }
+  .vm-product-card .vm-card-title { transition: color var(--motion-duration); }
+  .vm-product-card:hover .vm-card-title { color: var(--brand-graphite); }
+  .vm-product-card .product-card-media { margin-bottom: 1.5rem; }
+  .vm-card-copy { min-width: 0; }
+  .vm-card-copy .vm-card-title { margin-bottom: .5rem; }
+  .vm-card-meta + .vm-card-meta { margin-top: .5rem; }
+
+  @media (min-width: 768px) {
+    .vm-catalog-grid .product-card-media,
+    .vm-related-grid .product-card-media { margin-bottom: 1.25rem; }
+  }
+
+  @media (max-width: 767px) {
+    .vm-product-card .product-card-media { margin-bottom: .5rem; }
+    .vm-product-card .vm-card-title {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      height: 4.2em;
+      margin-bottom: .25rem;
+      font-size: .875rem;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+      text-wrap: pretty;
+    }
+    .vm-product-card .vm-card-meta {
+      min-width: 0;
+      overflow: hidden;
+      font-size: .6875rem;
+      line-height: 1.45;
+      letter-spacing: .01em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .vm-product-card .vm-card-meta + .vm-card-meta { margin-top: .25rem; }
+    .vm-product-card .vm-card-details {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      height: 2.9em;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+  }
+}

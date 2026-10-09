@@ -9,11 +9,14 @@
 .vm-footer a:hover { color: var(--brand-gold-light); }
 .vm-footer-bottom { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,.12); display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
 @media (max-width: 767px) {
-  .vm-footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem 1.5rem; }
+  .vm-footer-grid { grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 1.5rem 1.25rem; }
   .vm-footer-grid > :first-child { grid-column: 1 / -1; }
-  .vm-footer-bottom { align-items: flex-start; flex-direction: column; }
+  .vm-footer-title { margin-bottom: .75rem; font-size: .625rem; }
+  .vm-footer-title::before { margin-bottom: .75rem; }
+  .vm-footer-grid > * { min-width: 0; }
+  .vm-footer-bottom { align-items: flex-start; flex-direction: column; gap: .5rem; margin-top: 1.5rem; padding-top: 1rem; }
 }
-@media (max-width: 479px) {
+@media (max-width: 359px) {
   .vm-footer-grid { grid-template-columns: minmax(0,1fr); }
   .vm-footer-grid > :first-child { grid-column: auto; }
 }

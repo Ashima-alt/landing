@@ -5,6 +5,8 @@
 @import './styles/hero.css';
 @import './styles/featured.css';
 @import './styles/brand.css';
+@import './styles/product-card.css';
+@import './styles/catalog.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -58,6 +60,14 @@
   --header-height: 88px;
   --motion-duration: 180ms;
   --font-editorial: var(--font-playfair), Georgia, serif;
+}
+
+/* Keep responsive tokens in the same cascade layer as their defaults. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  :root { --section-space: 3.5rem; }
+}
+@media (max-width: 767px) {
+  :root { --header-height: 64px; --section-space: 2.5rem; }
 }
 
 .dark {
@@ -351,16 +361,16 @@
 .vm-link svg, .vm-button svg { transition: transform var(--motion-duration); }
 .vm-link:hover svg, .vm-button:hover svg { transform: translateX(3px); }
 .vm-rule { width: 48px; height: 1px; background: var(--brand-gold); }
-.vm-product-card { min-width: 0; }
-.vm-product-card .vm-card-title { transition: color var(--motion-duration); }
-.vm-product-card:hover .vm-card-title { color: var(--brand-graphite); }
-.vm-product-card .product-card-media { margin-bottom: 1.5rem; }
 
 @media (min-width: 1024px) { .vm-shell { width: min(calc(100% - 6rem), var(--content-max)); } }
 @media (max-width: 767px) {
-  :root { --header-height: 72px; --section-space: 4.5rem; }
   .vm-shell { width: calc(100% - 2rem); }
-  .vm-display { font-size: clamp(2.75rem, 9vw, 3.75rem); }
+  .vm-page { padding-top: calc(var(--header-height) + 1.75rem); }
+  .vm-display { font-size: clamp(2rem, 9.3vw, 2.5rem); line-height: 1.12; }
+  .vm-page-heading { font-size: clamp(1.875rem, 7.8vw, 2.25rem); }
+  .vm-heading { font-size: clamp(1.625rem, 7vw, 1.875rem); line-height: 1.2; }
+  .vm-body { font-size: .9375rem; line-height: 1.65; }
+  .vm-button, .vm-button-secondary { min-height: 48px; padding: .75rem 1.25rem; font-size: .75rem; letter-spacing: .1em; }
 }
 @media (prefers-reduced-motion: reduce) {
   html[data-scroll-behavior="smooth"] { scroll-behavior: auto; }

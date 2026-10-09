@@ -137,15 +137,15 @@ export function CatalogContent() {
   )
 
   return (
-    <div className="vm-shell pb-20 md:pb-28">
-      <div className="mb-10 md:mb-14">
+    <div className="vm-catalog vm-shell">
+      <div className="vm-catalog-heading">
         <span className="vm-eyebrow">Коллекция Valore Milano</span>
         <h1 className="vm-page-heading mt-4">
           Каталог
         </h1>
       </div>
 
-      <div className="flex justify-between items-center gap-4 mb-10 md:mb-12">
+      <div className="vm-catalog-toolbar">
         <p className="vm-meta" aria-live="polite">
           {loading
             ? "Загрузка…"
@@ -167,7 +167,7 @@ export function CatalogContent() {
       <div className="grid grid-cols-1 lg:grid-cols-[200px_minmax(0,1fr)] gap-10 xl:gap-16">
         <aside className="hidden lg:block sticky top-28 self-start" aria-label="Фильтры каталога">{filterPanel}</aside>
 
-        <div>
+        <div className="min-w-0">
           {error && (
             <div className="mb-8 text-sage text-sm" role="alert">
               Не удалось загрузить каталог. Попробуйте обновить страницу.
@@ -189,28 +189,30 @@ export function CatalogContent() {
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-7 xl:gap-x-9 gap-y-12 md:gap-y-16">
+            <div className="vm-catalog-grid">
               {products.map((product, index) => (
                 <article
                   key={product.id}
-                  className="group opacity-0 animate-fade-in"
+                  className="vm-product-card group opacity-0 animate-fade-in"
                   style={{ animationDelay: `${Math.min(index, 8) * 80}ms`, animationFillMode: "forwards" }}
                 >
-                  <Link href={`/product/${product.id}`} className="block">
+                  <Link href={`/product/${product.id}`} className="vm-product-card-link block" aria-label={product.title} title={product.title}>
                     <ProductCardMedia
                       product={product}
-                      className="isolate mb-5 bg-white [&_img]:mix-blend-multiply"
-                      sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1024px) 45vw, (max-width: 1280px) 35vw, 300px"
+                      className="isolate bg-white [&_img]:mix-blend-multiply"
+                      sizes="(max-width: 767px) calc((100vw - 44px) / 2), (max-width: 1023px) 45vw, (max-width: 1279px) 35vw, 300px"
                     />
-                    <h3 className="vm-card-title mb-2 group-hover:text-primary transition-colors">
-                      {product.title}
-                    </h3>
-                    <p className="vm-meta mb-2">
-                      Арт. {product.article}
-                    </p>
-                    <p className="vm-meta">
-                      {[product.material, product.size].filter(Boolean).join(" · ")}
-                    </p>
+                    <div className="vm-card-copy">
+                      <h3 className="vm-card-title group-hover:text-primary transition-colors">
+                        {product.title}
+                      </h3>
+                      <p className="vm-meta vm-card-meta" title={`Арт. ${product.article}`}>
+                        Арт. {product.article}
+                      </p>
+                      <p className="vm-meta vm-card-meta vm-card-details" title={[product.material, product.size].filter(Boolean).join(" · ")}>
+                        {[product.material, product.size].filter(Boolean).join(" · ")}
+                      </p>
+                    </div>
                   </Link>
                 </article>
               ))}
@@ -227,10 +229,10 @@ export function CatalogContent() {
             onClick={() => setIsFilterOpen(false)}
             aria-label="Закрыть"
           />
-          <div id="catalog-filters" role="dialog" aria-modal="true" aria-labelledby="catalog-filters-title" className="absolute inset-y-0 right-0 w-[85%] max-w-sm bg-cream p-7 overflow-y-auto">
+          <div id="catalog-filters" role="dialog" aria-modal="true" aria-labelledby="catalog-filters-title" className="vm-filter-drawer absolute inset-y-0 right-0 w-[85%] max-w-sm bg-cream p-7 overflow-y-auto">
             <div className="flex items-center justify-between mb-8">
               <h2 id="catalog-filters-title" className="vm-card-title">Фильтры</h2>
-              <button type="button" onClick={() => setIsFilterOpen(false)} aria-label="Закрыть фильтры" className="p-2 text-sage hover:text-primary transition-colors">
+              <button type="button" onClick={() => setIsFilterOpen(false)} aria-label="Закрыть фильтры" className="vm-filter-close text-sage hover:text-primary transition-colors">
                 <X className="w-5 h-5 text-sage" />
               </button>
             </div>
@@ -263,7 +265,7 @@ function FilterOption({
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`flex w-full items-center justify-between gap-3 py-2 text-left text-sm transition-colors ${
+      className={`vm-filter-option flex w-full items-center justify-between gap-3 py-2 text-left text-sm transition-colors ${
         active ? "text-sage-dark font-medium" : "text-sage hover:text-primary"
       }`}
     >

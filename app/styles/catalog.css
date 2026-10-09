@@ -1,0 +1,80 @@
+/* Catalog and product-page composition; mobile layouts share compact cards. */
+@layer components {
+  .vm-catalog, .vm-product-detail { padding-bottom: 5rem; }
+  .vm-catalog-heading { margin-bottom: 2.5rem; }
+  .vm-catalog-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .vm-catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.75rem;
+    row-gap: 4rem;
+  }
+  .vm-filter-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+  }
+  .vm-filter-drawer .vm-filter-option { min-height: 44px; }
+  .vm-product-breadcrumbs { margin-bottom: 1.5rem; }
+  .vm-product-back { margin-bottom: 2rem; }
+  .vm-product-layout { gap: 2.5rem; }
+  .vm-product-article { margin-bottom: 2.25rem; }
+  .vm-product-specs { gap: 1.75rem 1.5rem; margin-bottom: 2.5rem; }
+  .vm-product-specs dt { margin-bottom: .75rem; }
+  .vm-product-specs dd { overflow-wrap: anywhere; }
+  .vm-product-rule { margin-bottom: 2rem; }
+  .vm-related-products { margin-top: 5rem; }
+  .vm-related-products > .vm-heading { margin-bottom: 2rem; }
+  .vm-related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 2rem;
+    row-gap: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .vm-catalog, .vm-product-detail { padding-bottom: 7rem; }
+    .vm-catalog-heading { margin-bottom: 3.5rem; }
+    .vm-catalog-toolbar { margin-bottom: 3rem; }
+    .vm-product-breadcrumbs { margin-bottom: 2rem; }
+    .vm-product-back { margin-bottom: 2.5rem; }
+    .vm-product-article { margin-bottom: 3rem; }
+    .vm-product-specs { margin-bottom: 3rem; }
+    .vm-related-products { margin-top: 7rem; }
+    .vm-related-products > .vm-heading { margin-bottom: 3rem; }
+  }
+  @media (min-width: 1024px) {
+    .vm-product-layout { gap: 4rem; }
+    .vm-related-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (min-width: 1280px) {
+    .vm-catalog-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 2.25rem; }
+    .vm-product-layout { gap: 6rem; }
+  }
+  @media (max-width: 767px) {
+    .vm-catalog, .vm-product-detail { padding-bottom: 3rem; }
+    .vm-catalog-heading { margin-bottom: 1rem; }
+    .vm-catalog-toolbar { min-height: 44px; margin-bottom: 1.25rem; }
+    .vm-catalog-grid, .vm-related-grid { column-gap: .75rem; row-gap: 1.5rem; }
+    .vm-product-breadcrumbs { margin-bottom: 1rem; }
+    .vm-product-breadcrumbs li { min-width: 0; overflow-wrap: anywhere; }
+    .vm-product-back { margin-bottom: 1.25rem; }
+    .vm-product-layout { gap: 1.5rem; }
+    .vm-product-detail .vm-product-title { font-size: 1.75rem; line-height: 1.2; }
+    .vm-product-article { margin-bottom: 1.5rem; }
+    .vm-product-specs { gap: 1rem; margin-bottom: 1.5rem; }
+    .vm-product-specs dt { margin-bottom: .5rem; }
+    .vm-product-rule { margin-bottom: 1.25rem; }
+    .vm-related-products { margin-top: 3rem; }
+    .vm-related-products > .vm-heading { margin-bottom: 1.5rem; }
+  }
+}

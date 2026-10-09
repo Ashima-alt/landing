@@ -41,17 +41,17 @@ export function FeaturedProducts() {
                 className="vm-product-card group opacity-0 animate-fade-in"
                 style={{ animationDelay: `${index * 80}ms`, animationFillMode: "forwards" }}
               >
-                <Link href={`/product/${product.id}`} className="block">
+                <Link href={`/product/${product.id}`} className="vm-product-card-link block" aria-label={product.title} title={product.title}>
                   <ProductCardMedia
                     product={product}
                     className="isolate bg-cream [&_img]:mix-blend-multiply"
-                    sizes="(max-width: 479px) 100vw, (max-width: 1023px) 50vw, 25vw"
+                    sizes="(max-width: 767px) calc((100vw - 44px) / 2), (max-width: 1023px) 50vw, 25vw"
                   />
-                  <div>
-                    <h3 className="vm-card-title mb-2">
+                  <div className="vm-card-copy">
+                    <h3 className="vm-card-title">
                       {product.title}
                     </h3>
-                    <p className="vm-meta">Арт. {product.article}</p>
+                    <p className="vm-meta vm-card-meta" title={`Арт. ${product.article}`}>Арт. {product.article}</p>
                   </div>
                 </Link>
               </article>

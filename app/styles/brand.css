@@ -27,9 +27,16 @@
   .vm-story-grid { gap: 2.5rem; }
 }
 @media (max-width: 767px) {
-  .vm-story-grid { grid-template-columns: minmax(0,1fr); gap: 2.5rem; }
-  .vm-brand-plate { aspect-ratio: 5 / 4; }
-  .vm-principles { grid-template-columns: minmax(0,1fr); gap: 1.5rem; }
-  .vm-principle { padding-top: 1rem; }
+  .vm-story { padding-top: .75rem; }
+  .vm-story-grid { grid-template-columns: minmax(0,1fr); gap: 1.5rem; }
+  .vm-brand-plate { aspect-ratio: auto; height: clamp(136px, 36vw, 156px); }
+  .vm-brand-mark { width: 60%; max-width: 220px; }
+  .vm-story-copy .vm-heading { margin-block: .5rem 1rem; }
+  .vm-story-copy p + p { margin-top: 1rem; }
+  .vm-story-signoff { font-size: 1rem; line-height: 1.6; }
+  .vm-principles { grid-template-columns: minmax(0,1fr); gap: 1rem; margin-top: 1.75rem; }
+  .vm-principle { display: grid; grid-template-columns: 76px minmax(0,1fr); gap: .75rem; padding-top: .875rem; }
+  .vm-principle h3 { font-size: 1rem; line-height: 1.5; margin-bottom: 0; }
+  .vm-principle p { font-size: .8125rem; line-height: 1.65; }
 }
 }

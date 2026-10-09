@@ -37,8 +37,8 @@ export function ProductDetail({ product }: ProductDetailProps) {
   }, [product.id, product.category?.slug])
 
   return (
-    <div className="vm-shell pb-20 md:pb-28">
-      <nav className="mb-6 md:mb-8" aria-label="Путь к товару">
+    <div className="vm-product-detail vm-shell">
+      <nav className="vm-product-breadcrumbs" aria-label="Путь к товару">
         <ol className="vm-meta flex flex-wrap items-center gap-x-2 gap-y-1">
           <li>
             <Link href="/" className="hover:text-primary transition-colors">
@@ -72,13 +72,13 @@ export function ProductDetail({ product }: ProductDetailProps) {
       <button
         type="button"
         onClick={() => router.back()}
-        className="vm-link flex items-center gap-2 mb-8 md:mb-10"
+        className="vm-product-back vm-link flex items-center gap-2"
       >
         <ChevronLeft className="w-4 h-4" />
         Назад
       </button>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-24 items-start">
+      <div className="vm-product-layout grid grid-cols-1 lg:grid-cols-2 items-start">
         <ProductGallery images={product.images || []} title={product.title} />
 
         <div className="lg:pt-6 opacity-0 animate-fade-in" style={{ animationDelay: "120ms", animationFillMode: "forwards" }}>
@@ -87,17 +87,17 @@ export function ProductDetail({ product }: ProductDetailProps) {
               {product.category.name}
             </span>
           )}
-          <h1 className="vm-heading mt-4 mb-4 text-balance">
+          <h1 className="vm-product-title vm-heading mt-4 mb-4 text-balance">
             {product.title}
           </h1>
-          <p className="vm-meta mb-9 md:mb-12">
+          <p className="vm-product-article vm-meta">
             Артикул: {product.article}
           </p>
 
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-7 mb-10 md:mb-12">
+          <dl className="vm-product-specs grid grid-cols-2">
             {product.size && (
               <div>
-                <dt className="vm-eyebrow mb-3">
+                <dt className="vm-eyebrow">
                   Размер
                 </dt>
                 <dd className="text-sage-dark text-sm leading-relaxed">{product.size}</dd>
@@ -105,7 +105,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
             )}
             {product.material && (
               <div>
-                <dt className="vm-eyebrow mb-3">
+                <dt className="vm-eyebrow">
                   Материал
                 </dt>
                 <dd className="text-sage-dark text-sm leading-relaxed">{product.material}</dd>
@@ -113,7 +113,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
             )}
           </dl>
 
-          <div className="w-12 h-px bg-gold mb-8" aria-hidden="true" />
+          <div className="vm-product-rule w-12 h-px bg-gold" aria-hidden="true" />
 
           <div className="vm-body max-w-lg whitespace-pre-line">
             {product.description || "Описание скоро появится."}
@@ -122,29 +122,33 @@ export function ProductDetail({ product }: ProductDetailProps) {
       </div>
 
       {related.length > 0 && (
-        <section className="mt-20 md:mt-28">
-          <h2 className="vm-heading mb-8 md:mb-12">
+        <section className="vm-related-products">
+          <h2 className="vm-heading">
             Похожие товары
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+          <div className="vm-related-grid">
             {related.map((item, index) => (
               <Link
                 key={item.id}
                 href={`/product/${item.id}`}
-                className="group opacity-0 animate-fade-in"
+                className="vm-product-card vm-product-card-link group opacity-0 animate-fade-in"
+                aria-label={item.title}
+                title={item.title}
                 style={{ animationDelay: `${index * 100}ms`, animationFillMode: "forwards" }}
               >
                 <ProductCardMedia
                   product={item}
-                  className="isolate mb-5 bg-white [&_img]:mix-blend-multiply"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="isolate bg-white [&_img]:mix-blend-multiply"
+                  sizes="(max-width: 767px) calc((100vw - 44px) / 2), (max-width: 1023px) 45vw, 33vw"
                 />
-                <h3 className="vm-card-title mb-2 group-hover:text-primary transition-colors">
-                  {item.title}
-                </h3>
-                <p className="vm-meta">
-                  Арт. {item.article}
-                </p>
+                <div className="vm-card-copy">
+                  <h3 className="vm-card-title group-hover:text-primary transition-colors">
+                    {item.title}
+                  </h3>
+                  <p className="vm-meta vm-card-meta" title={`Арт. ${item.article}`}>
+                    Арт. {item.article}
+                  </p>
+                </div>
               </Link>
             ))}
           </div>

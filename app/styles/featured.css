@@ -3,12 +3,10 @@
 .vm-section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; margin-bottom: clamp(2.5rem, 4vw, 4rem); }
 .vm-featured-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: clamp(1.5rem, 2.5vw, 2.5rem); }
 @media (max-width: 1023px) {
-  .vm-featured-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .vm-featured-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 2rem 1.25rem; }
 }
 @media (max-width: 767px) {
-  .vm-section-heading { align-items: flex-start; flex-direction: column; gap: .75rem; }
-}
-@media (max-width: 479px) {
-  .vm-featured-grid { grid-template-columns: minmax(0,1fr); gap: 2.5rem; }
+  .vm-section-heading { align-items: flex-start; flex-direction: column; gap: .125rem; margin-bottom: 1rem; }
+  .vm-featured-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1.5rem .75rem; }
 }
 }

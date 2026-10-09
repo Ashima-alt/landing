@@ -11,7 +11,7 @@ export function HeroSection() {
     <section id="top" className="vm-hero">
       <div className="vm-shell vm-hero-grid">
         <div className="vm-hero-copy">
-          <div className="vm-rule mb-7" aria-hidden="true" />
+          <div className="vm-rule mb-4 md:mb-7" aria-hidden="true" />
           <h1 className="vm-display">
             Красота
             <br />
@@ -42,7 +42,7 @@ export function HeroSection() {
             fill
             priority
             className="vm-hero-photo"
-            sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1440px) 55vw, 720px"
+            sizes="(max-width: 389px) 72vw, (max-width: 767px) 280px, (max-width: 1440px) 55vw, 720px"
           />
         </div>
       </div>

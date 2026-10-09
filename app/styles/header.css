@@ -19,4 +19,9 @@
 .vm-navigation-link:hover::after, .vm-navigation-link[aria-current="page"]::after { transform: scaleX(1); }
 .vm-mobile-menu { background: var(--brand-charcoal); color: #FFF; --ring: #FFF; }
 .vm-mobile-menu a:hover { color: var(--brand-gold-light); }
+.vm-menu-button { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; }
+@media (max-width: 767px) {
+  .vm-logo-link { display: inline-flex; align-items: center; min-height: 44px; }
+  .vm-header-logo { font-size: 1rem; letter-spacing: .18em; }
+}
 }
