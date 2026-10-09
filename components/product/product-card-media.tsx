@@ -40,7 +40,7 @@ export function ProductCardMedia({
 
   return (
     <div
-      className={cn("product-card-media relative aspect-square overflow-hidden bg-cream-dark", className)}
+      className={cn("product-card-media relative aspect-square overflow-hidden bg-cream", className)}
       onMouseMove={onMove}
       onMouseLeave={() => setIndex(0)}
     >
@@ -61,7 +61,7 @@ export function ProductCardMedia({
               key={img.id}
               className={cn(
                 "h-0.5 flex-1 rounded-full transition-colors",
-                i === index ? "bg-gold" : "bg-cream/50"
+                i === index ? "bg-primary" : "bg-border"
               )}
             />
           ))}

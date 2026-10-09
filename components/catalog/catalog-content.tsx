@@ -66,8 +66,8 @@ export function CatalogContent() {
   const filterPanel = (
     <div className="space-y-8">
       <div>
-        <h3 className="text-xs tracking-widest uppercase text-sage-dark mb-4">Категория</h3>
-        <div className="space-y-2">
+        <h3 className="vm-eyebrow mb-5">Категория</h3>
+        <div className="space-y-1">
           <FilterOption
             active={selectedCategory === "all"}
             label="Все"
@@ -94,8 +94,8 @@ export function CatalogContent() {
 
       {filters.materials.length > 0 && (
         <div>
-          <h3 className="text-xs tracking-widest uppercase text-sage-dark mb-4">Материал</h3>
-          <div className="space-y-2">
+          <h3 className="vm-eyebrow mb-5">Материал</h3>
+          <div className="space-y-1">
             <FilterOption
               active={selectedMaterial === "all"}
               label="Все"
@@ -115,8 +115,8 @@ export function CatalogContent() {
 
       {filters.sizes.length > 0 && (
         <div>
-          <h3 className="text-xs tracking-widest uppercase text-sage-dark mb-4">Размер</h3>
-          <div className="space-y-2">
+          <h3 className="vm-eyebrow mb-5">Размер</h3>
+          <div className="space-y-1">
             <FilterOption
               active={selectedSize === "all"}
               label="Все"
@@ -137,17 +137,16 @@ export function CatalogContent() {
   )
 
   return (
-    <div className="container mx-auto px-6 lg:px-12 pb-24">
-      <div className="text-center mb-12 md:mb-16">
-        <span className="text-gold text-xs tracking-[0.4em] uppercase">Коллекция</span>
-        <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl leading-tight text-sage-dark mt-4">
+    <div className="vm-shell pb-20 md:pb-28">
+      <div className="mb-10 md:mb-14">
+        <span className="vm-eyebrow">Коллекция Valore Milano</span>
+        <h1 className="vm-page-heading mt-4">
           Каталог
         </h1>
-        <div className="w-16 h-px bg-brand-yellow mx-auto mt-6" />
       </div>
 
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 pb-8 border-b border-border/50">
-        <p className="text-sage-light text-sm">
+      <div className="flex justify-between items-center gap-4 mb-10 md:mb-12">
+        <p className="vm-meta" aria-live="polite">
           {loading
             ? "Загрузка…"
             : `${products.length} ${products.length === 1 ? "товар" : "товаров"}`}
@@ -156,39 +155,41 @@ export function CatalogContent() {
         <button
           type="button"
           onClick={() => setIsFilterOpen(true)}
-          className="md:hidden flex items-center gap-2 text-sage hover:text-gold text-sm tracking-wider uppercase transition-colors"
+          className="lg:hidden vm-link flex items-center gap-2"
+          aria-expanded={isFilterOpen}
+          aria-controls="catalog-filters"
         >
           <Filter className="w-4 h-4" />
           Фильтры
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-10">
-        <aside className="hidden lg:block sticky top-28 self-start">{filterPanel}</aside>
+      <div className="grid grid-cols-1 lg:grid-cols-[200px_minmax(0,1fr)] gap-10 xl:gap-16">
+        <aside className="hidden lg:block sticky top-28 self-start" aria-label="Фильтры каталога">{filterPanel}</aside>
 
         <div>
           {error && (
-            <div className="mb-8 border border-border bg-cream-dark/50 px-6 py-4 text-sage text-sm">
-              {error}. Проверьте, что API запущен.
+            <div className="mb-8 text-sage text-sm" role="alert">
+              Не удалось загрузить каталог. Попробуйте обновить страницу.
             </div>
           )}
 
           {loading ? (
             <div className="min-h-[40vh] flex items-center justify-center">
-              <div className="w-8 h-8 border-2 border-gold border-t-transparent rounded-full animate-spin" />
+              <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
           ) : products.length === 0 ? (
             <div className="min-h-[40vh] flex flex-col items-center justify-center text-center">
-              <p className="font-serif text-2xl text-sage-dark mb-3">Ничего не найдено</p>
-              <p className="text-sage-light text-sm mb-6">
-                Измените фильтры или добавьте товары в админке
+              <p className="vm-card-title mb-3">Ничего не найдено</p>
+              <p className="vm-body mb-6">
+                Измените фильтры, чтобы посмотреть другие товары
               </p>
-              <Link href="/catalog" className="text-gold text-xs tracking-widest uppercase">
+              <Link href="/catalog" className="vm-link">
                 Сбросить
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-12 md:gap-y-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-7 xl:gap-x-9 gap-y-12 md:gap-y-16">
               {products.map((product, index) => (
                 <article
                   key={product.id}
@@ -198,16 +199,16 @@ export function CatalogContent() {
                   <Link href={`/product/${product.id}`} className="block">
                     <ProductCardMedia
                       product={product}
-                      className="isolate mb-6 bg-cream [&_img]:mix-blend-multiply"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                      className="isolate mb-5 bg-white [&_img]:mix-blend-multiply"
+                      sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1024px) 45vw, (max-width: 1280px) 35vw, 300px"
                     />
-                    <h3 className="font-serif text-xl leading-snug text-sage-dark mb-2 group-hover:text-gold transition-colors">
+                    <h3 className="vm-card-title mb-2 group-hover:text-primary transition-colors">
                       {product.title}
                     </h3>
-                    <p className="text-sage-light text-xs tracking-wider mb-2">
+                    <p className="vm-meta mb-2">
                       Арт. {product.article}
                     </p>
-                    <p className="text-sage text-sm">
+                    <p className="vm-meta">
                       {[product.material, product.size].filter(Boolean).join(" · ")}
                     </p>
                   </Link>
@@ -219,17 +220,17 @@ export function CatalogContent() {
       </div>
 
       {isFilterOpen && (
-        <div className="fixed inset-0 z-50 md:hidden">
+        <div className="fixed inset-0 z-50 lg:hidden">
           <button
             type="button"
             className="absolute inset-0 bg-sage-dark/40"
             onClick={() => setIsFilterOpen(false)}
             aria-label="Закрыть"
           />
-          <div className="absolute inset-y-0 right-0 w-[85%] max-w-sm bg-cream p-6 overflow-y-auto shadow-xl">
+          <div id="catalog-filters" role="dialog" aria-modal="true" aria-labelledby="catalog-filters-title" className="absolute inset-y-0 right-0 w-[85%] max-w-sm bg-cream p-7 overflow-y-auto">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="font-serif text-2xl text-sage-dark">Фильтры</h2>
-              <button type="button" onClick={() => setIsFilterOpen(false)}>
+              <h2 id="catalog-filters-title" className="vm-card-title">Фильтры</h2>
+              <button type="button" onClick={() => setIsFilterOpen(false)} aria-label="Закрыть фильтры" className="p-2 text-sage hover:text-primary transition-colors">
                 <X className="w-5 h-5 text-sage" />
               </button>
             </div>
@@ -237,7 +238,7 @@ export function CatalogContent() {
             <button
               type="button"
               onClick={() => setIsFilterOpen(false)}
-              className="mt-10 w-full bg-sage-dark text-cream py-3 text-xs tracking-widest uppercase"
+              className="vm-button mt-10 w-full"
             >
               Показать
             </button>
@@ -261,8 +262,9 @@ function FilterOption({
     <button
       type="button"
       onClick={onClick}
-      className={`flex w-full items-center justify-between text-left text-sm transition-colors ${
-        active ? "text-gold" : "text-sage hover:text-gold"
+      aria-pressed={active}
+      className={`flex w-full items-center justify-between gap-3 py-2 text-left text-sm transition-colors ${
+        active ? "text-sage-dark font-medium" : "text-sage hover:text-primary"
       }`}
     >
       <span>{label}</span>

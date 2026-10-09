@@ -35,7 +35,8 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
   }, [emblaApi, onSelect])
 
   useEffect(() => {
-    const viewport = emblaApi?.rootNode()
+    if (!emblaApi) return
+    const viewport = emblaApi.rootNode()
     if (!viewport || images.length < 2) return
 
     const onWheel = (event: WheelEvent) => {
@@ -64,8 +65,8 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
 
   if (!images.length) {
     return (
-      <div className="relative aspect-square overflow-hidden bg-cream-dark animate-fade-in">
-        <div className="absolute inset-0 flex items-center justify-center text-sage-light text-sm tracking-widest uppercase">
+      <div className="relative aspect-square overflow-hidden bg-white animate-fade-in">
+        <div className="absolute inset-0 flex items-center justify-center vm-meta">
           Нет фото
         </div>
       </div>
@@ -73,9 +74,9 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
   }
 
   return (
-    <div className="space-y-4 opacity-0 animate-fade-in" style={{ animationFillMode: "forwards" }}>
+    <div className="space-y-5 opacity-0 animate-fade-in" style={{ animationFillMode: "forwards" }}>
       <div
-        className="overflow-hidden bg-cream-dark cursor-ew-resize touch-pan-y"
+        className="overflow-hidden bg-white cursor-ew-resize touch-pan-y"
         ref={emblaRef}
         onMouseMove={onMouseMove}
       >
@@ -83,14 +84,14 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
           {images.map((image, index) => (
             <div
               key={image.id}
-              className="relative min-w-0 flex-[0_0_100%] aspect-square"
+              className="product-card-media relative min-w-0 flex-[0_0_100%] aspect-square"
             >
               <Image
                 src={mediaUrl(image.url)}
                 alt={`${title} — фото ${index + 1}`}
                 fill
                 priority={index === 0}
-                className="object-cover"
+                className="object-contain object-center p-3"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
@@ -106,7 +107,7 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
                 key={image.id}
                 className={cn(
                   "h-0.5 flex-1 transition-colors",
-                  i === selected ? "bg-gold" : "bg-border"
+                  i === selected ? "bg-primary" : "bg-border"
                 )}
               />
             ))}
@@ -117,18 +118,20 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
                 key={image.id}
                 type="button"
                 onClick={() => emblaApi?.scrollTo(index)}
+                aria-label={`Показать фото ${index + 1}: ${title}`}
+                aria-pressed={selected === index}
                 className={cn(
-                  "relative h-20 w-20 flex-shrink-0 overflow-hidden bg-cream-dark transition-all duration-300",
+                  "relative h-20 w-20 flex-shrink-0 overflow-hidden bg-white transition-opacity duration-300",
                   selected === index
-                    ? "ring-1 ring-gold opacity-100"
-                    : "opacity-55 hover:opacity-100"
+                    ? "ring-1 ring-primary opacity-100"
+                    : "opacity-65 hover:opacity-100"
                 )}
               >
                 <Image
                   src={mediaUrl(image.url)}
                   alt=""
                   fill
-                  className="object-cover"
+                  className="object-contain object-center p-1"
                   sizes="80px"
                 />
               </button>
