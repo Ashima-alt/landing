@@ -3,38 +3,48 @@
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight } from "lucide-react"
+import type { CSSProperties } from "react"
+import { homeHeroImage } from "@/lib/home-presentation"
 
 export function HeroSection() {
   return (
-    <section id="top" className="relative h-[88svh] min-h-[560px] md:min-h-[640px] max-h-[960px] flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0">
-        <Image
-          src="/images/hero-tableware.jpg"
-          alt="Сервировка стола Valore Milano"
-          fill
-          priority
-          className="object-cover"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-sage-dark/50" />
-      </div>
-
-      <div className="relative z-10 container mx-auto px-6 lg:px-12 pt-24 pb-16 text-center">
-        <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-cream leading-[1.15] tracking-[-0.02em] mb-6 text-balance">
-          Красота
-          <br />
-          каждого дня
-        </h1>
-        <p className="text-cream/90 text-base md:text-lg max-w-md mx-auto mb-9 leading-relaxed text-balance">
-          Посуда и аксессуары для кухни и сервировки.
-        </p>
-        <Link
-          href="/catalog"
-          className="group inline-flex items-center gap-3 bg-brand-blue hover:bg-brand-blue-dark text-cream px-7 py-4 text-xs tracking-widest uppercase transition-colors duration-300"
+    <section id="top" className="vm-hero">
+      <div className="vm-shell vm-hero-grid">
+        <div className="vm-hero-copy">
+          <div className="vm-rule mb-7" aria-hidden="true" />
+          <h1 className="vm-display">
+            Красота
+            <br />
+            каждого дня
+          </h1>
+          <p className="vm-body vm-hero-description">
+            Посуда и аксессуары для кухни и сервировки.
+            Простые формы. Внимание к деталям.
+          </p>
+          <Link href="/catalog" className="vm-button">
+            Смотреть каталог
+            <ArrowRight className="size-4" aria-hidden="true" />
+          </Link>
+        </div>
+        <div
+          className="vm-hero-media"
+          style={{
+            "--hero-fit": homeHeroImage.fit,
+            "--hero-desktop-ratio": homeHeroImage.desktopRatio,
+            "--hero-mobile-ratio": homeHeroImage.mobileRatio,
+            "--hero-desktop-position": homeHeroImage.desktopPosition,
+            "--hero-mobile-position": homeHeroImage.mobilePosition,
+          } as CSSProperties}
         >
-          Смотреть каталог
-          <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-        </Link>
+          <Image
+            src={homeHeroImage.src}
+            alt={homeHeroImage.alt}
+            fill
+            priority
+            className="vm-hero-photo"
+            sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1440px) 55vw, 720px"
+          />
+        </div>
       </div>
     </section>
   )

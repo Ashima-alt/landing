@@ -1,1 +1,18 @@
 /* Valore Milano: hero. */
+@layer components {
+
+.vm-hero { padding-top: calc(var(--header-height) + 2.5rem); padding-bottom: clamp(3rem, 6vw, 6rem); }
+.vm-hero-grid { display: grid; grid-template-columns: .85fr 1.15fr; align-items: center; gap: clamp(2.5rem, 5.5vw, 5.5rem); }
+.vm-hero-copy { padding-block: 2rem; }
+.vm-hero-media { position: relative; aspect-ratio: var(--hero-desktop-ratio); overflow: hidden; background: var(--brand-paper); }
+.vm-hero-photo { object-fit: var(--hero-fit); object-position: var(--hero-desktop-position); }
+.vm-hero-description { max-width: 27rem; margin-block: 1.75rem 2rem; }
+@media (max-width: 767px) {
+  .vm-hero { padding-top: calc(var(--header-height) + 1.5rem); padding-bottom: 2rem; }
+  .vm-hero-grid { grid-template-columns: minmax(0,1fr); gap: 1.75rem; }
+  .vm-hero-copy { padding-block: 0; }
+  .vm-hero-media { order: -1; aspect-ratio: var(--hero-mobile-ratio); }
+  .vm-hero-photo { object-position: var(--hero-mobile-position); }
+  .vm-hero-description { margin-block: 1.25rem 1.5rem; }
+}
+}
