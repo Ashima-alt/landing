@@ -1,1 +1,22 @@
 /* Valore Milano: header. */
+@layer components {
+
+.vm-site-header {
+  position: fixed; inset: 0 0 auto; z-index: 50; height: var(--header-height);
+  display: flex; align-items: center; background: rgba(255,255,255,.97);
+  border-bottom: 1px solid transparent; transition: border-color var(--motion-duration);
+}
+.vm-site-header[data-scrolled="true"] { border-bottom-color: var(--border); }
+.vm-navigation-link {
+  position: relative; display: inline-flex; align-items: center; min-height: 44px;
+  color: var(--brand-graphite); font-size: .6875rem; letter-spacing: .13em; text-transform: uppercase;
+}
+.vm-navigation-link::after {
+  content: ''; position: absolute; inset: auto 0 7px; height: 1px;
+  background: var(--brand-gold); transform: scaleX(0); transform-origin: left;
+  transition: transform var(--motion-duration);
+}
+.vm-navigation-link:hover::after, .vm-navigation-link[aria-current="page"]::after { transform: scaleX(1); }
+.vm-mobile-menu { background: var(--brand-charcoal); color: #FFF; --ring: #FFF; }
+.vm-mobile-menu a:hover { color: var(--brand-gold-light); }
+}

@@ -2,15 +2,15 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export function Header() {
   const pathname = usePathname()
-  const isHome = pathname === "/"
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,58 +21,74 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [pathname])
 
-  // On catalog/product (cream pages) always use solid header — transparent + cream text disappears
-  const solid = !isHome || isScrolled
+  useEffect(() => {
+    if (!isMobileMenuOpen) return
+    const previousFocus = document.activeElement as HTMLElement | null
+    const previousOverflow = document.body.style.overflow
+    const desktop = window.matchMedia("(min-width: 768px)")
+    const onViewportChange = () => {
+      if (desktop.matches) setIsMobileMenuOpen(false)
+    }
+    desktop.addEventListener("change", onViewportChange)
+    document.body.style.overflow = "hidden"
+    const focusable = () => Array.from(
+      menuRef.current?.querySelectorAll<HTMLElement>('button, a[href]') ?? []
+    )
+    focusable()[0]?.focus()
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsMobileMenuOpen(false)
+      if (event.key !== "Tab") return
+      const items = focusable()
+      const first = items[0]
+      const last = items[items.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last?.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first?.focus()
+      }
+    }
+    document.addEventListener("keydown", onKeyDown)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      document.removeEventListener("keydown", onKeyDown)
+      desktop.removeEventListener("change", onViewportChange)
+      previousFocus?.focus()
+    }
+  }, [isMobileMenuOpen])
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-        solid
-          ? "bg-cream/95 backdrop-blur-md shadow-sm py-4"
-          : "bg-transparent py-6"
-      )}
-    >
-      <nav className="container mx-auto px-6 lg:px-12">
+    <header className="vm-site-header" data-scrolled={isScrolled}>
+      <nav className="vm-shell" aria-label="Основная навигация">
         <div className="flex items-center justify-between">
           <Link href="/" className="group relative">
             <span
-              className={cn(
-                "font-serif text-lg sm:text-xl md:text-2xl tracking-[0.2em] md:tracking-[0.3em] uppercase transition-colors duration-300",
-                solid ? "text-sage-dark" : "text-cream"
-              )}
+              className="font-serif text-lg sm:text-xl md:text-2xl tracking-[0.2em] md:tracking-[0.3em] uppercase text-sage-dark"
             >
               Valore Milano
             </span>
-            <span className="absolute -bottom-1 left-0 w-0 h-px bg-brand-yellow transition-all duration-300 group-hover:w-full" />
+            <span className="absolute -bottom-1 left-0 w-0 h-px bg-brand-gold transition-all duration-200 group-hover:w-full" aria-hidden="true" />
           </Link>
 
           <div className="flex items-center gap-6">
             <div className="hidden md:flex items-center gap-8 lg:gap-10">
               <Link
                 href="/catalog"
-                className={cn(
-                  "text-xs tracking-widest uppercase transition-colors duration-300",
-                  solid ? "text-sage hover:text-brand-blue" : "text-cream/90 hover:text-brand-yellow"
-                )}
+                className="vm-navigation-link"
+                aria-current={pathname === "/catalog" ? "page" : undefined}
               >
                 Каталог
               </Link>
               <Link
                 href="/#about"
-                className={cn(
-                  "text-xs tracking-widest uppercase transition-colors duration-300",
-                  solid ? "text-sage hover:text-brand-blue" : "text-cream/90 hover:text-brand-yellow"
-                )}
+                className="vm-navigation-link"
               >
                 О бренде
               </Link>
               <Link
                 href="/#contact"
-                className={cn(
-                  "text-xs tracking-widest uppercase transition-colors duration-300",
-                  solid ? "text-sage hover:text-brand-blue" : "text-cream/90 hover:text-brand-yellow"
-                )}
+                className="vm-navigation-link"
               >
                 Контакты
               </Link>
@@ -83,10 +99,7 @@ export function Header() {
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu"
               onClick={() => setIsMobileMenuOpen(true)}
-              className={cn(
-                "md:hidden -m-2 p-2 transition-colors duration-300",
-                solid ? "text-sage" : "text-cream"
-              )}
+              className="md:hidden -m-2 p-2 text-sage-dark"
             >
               <Menu className="w-6 h-6" />
             </button>
@@ -96,16 +109,20 @@ export function Header() {
 
       <div
         id="mobile-menu"
+        ref={menuRef}
+        role="dialog"
+        aria-label="Меню сайта"
+        aria-modal={isMobileMenuOpen ? true : undefined}
         aria-hidden={!isMobileMenuOpen}
         inert={!isMobileMenuOpen}
         className={cn(
-          "fixed inset-0 bg-brand-blue z-50 transition-all duration-500 md:hidden",
+          "vm-mobile-menu fixed inset-0 z-50 transition-opacity duration-200 md:hidden overflow-y-auto",
           isMobileMenuOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
         )}
       >
-        <div className="container mx-auto px-6 py-6">
+        <div className="vm-shell py-6">
           <div className="flex items-center justify-between mb-16">
             <span className="font-serif text-lg sm:text-xl tracking-[0.2em] uppercase text-cream">
               Valore Milano
@@ -119,32 +136,32 @@ export function Header() {
               <X className="w-6 h-6" />
             </button>
           </div>
-          <nav className="flex flex-col gap-8">
+          <nav className="flex flex-col gap-8" aria-label="Мобильная навигация">
             <Link
               href="/"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="font-serif text-3xl text-cream hover:text-brand-yellow transition-colors"
+              className="font-serif text-3xl text-cream transition-colors"
             >
               Главная
             </Link>
             <Link
               href="/catalog"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="font-serif text-3xl text-cream hover:text-brand-yellow transition-colors"
+              className="font-serif text-3xl text-cream transition-colors"
             >
               Каталог
             </Link>
             <Link
               href="/#about"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="font-serif text-3xl text-cream hover:text-brand-yellow transition-colors"
+              className="font-serif text-3xl text-cream transition-colors"
             >
               О бренде
             </Link>
             <Link
               href="/#contact"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="font-serif text-3xl text-cream hover:text-brand-yellow transition-colors"
+              className="font-serif text-3xl text-cream transition-colors"
             >
               Контакты
             </Link>
