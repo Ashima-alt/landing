@@ -132,6 +132,16 @@ jobs:
           deployment_started=1
           pm2 stop landing
           git merge --ff-only "$target"
+          # Root's restrictive umask must not hide public brand assets from Next.js.
+          if [[ -d public/brand ]]; then
+            chmod 755 public/brand
+            for asset in public/brand/valore-emblem.svg public/brand/valore-wordmark.svg; do
+              if [[ -f "$asset" ]]; then
+                chmod 644 "$asset"
+                sudo -n -u deploy -H test -r "$PWD/$asset"
+              fi
+            done
+          fi
           mv .next "$build_dir/old-next"
           mv node_modules "$build_dir/old-node_modules"
           mv "$build_dir/.next" .next
