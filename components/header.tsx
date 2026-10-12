@@ -59,6 +59,7 @@ export function Header() {
   }, [isMobileMenuOpen])
 
   return (
+    <>
     <header className="vm-site-header" data-scrolled={isScrolled}>
       <nav className="vm-shell" aria-label="Основная навигация">
         <div className="flex items-center justify-between">
@@ -106,7 +107,9 @@ export function Header() {
           </div>
         </div>
       </nav>
+    </header>
 
+      {/* Keep the fullscreen menu outside the header's backdrop-filter containing block. */}
       <div
         id="mobile-menu"
         ref={menuRef}
@@ -168,6 +171,6 @@ export function Header() {
           </nav>
         </div>
       </div>
-    </header>
+    </>
   )
 }
