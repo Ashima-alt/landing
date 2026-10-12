@@ -142,6 +142,11 @@ jobs:
               fi
             done
           fi
+          # The new public hero image must also be readable by the app user.
+          if [[ -f public/images/hero-valore-cookware.webp ]]; then
+            chmod 644 public/images/hero-valore-cookware.webp
+            sudo -n -u deploy -H test -r "$PWD/public/images/hero-valore-cookware.webp"
+          fi
           mv .next "$build_dir/old-next"
           mv node_modules "$build_dir/old-node_modules"
           mv "$build_dir/.next" .next
@@ -153,6 +158,7 @@ jobs:
             if curl --fail --silent --show-error --max-time 5 http://127.0.0.1:3000/ > "$build_dir/home.html" \
               && grep -q 'Valore Milano' "$build_dir/home.html" \
               && curl --fail --silent --show-error --max-time 5 http://127.0.0.1:3000/catalog > /dev/null \
+              && { [[ ! -f public/images/hero-valore-cookware.webp ]] || curl --fail --silent --show-error --max-time 5 http://127.0.0.1:3000/images/hero-valore-cookware.webp > /dev/null; } \
               && curl --fail --silent --show-error --max-time 5 http://127.0.0.1:3000/api/health > "$build_dir/health.json" \
               && node -e 'if(JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")).ok !== true) process.exit(1)' "$build_dir/health.json"; then
               ready=1
