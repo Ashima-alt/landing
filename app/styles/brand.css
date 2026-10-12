@@ -6,15 +6,27 @@
 .vm-brand-plate {
   position: relative; display: flex; align-items: center; justify-content: center;
   width: 100%; aspect-ratio: 5 / 4; overflow: hidden;
-  background: linear-gradient(120deg, #484D4F 0%, #54585A 46%, #4D5153 100%);
+  isolation: isolate;
+  background: radial-gradient(ellipse at 50% 49%, rgba(163,140,99,.11) 0%, rgba(163,140,99,.045) 37%, transparent 69%);
 }
-.vm-brand-plate::after { content:''; position:absolute; inset: 0; pointer-events:none; box-shadow: inset 0 1px rgba(255,255,255,.07), inset 0 -1px rgba(0,0,0,.15); }
+.vm-brand-plate::before {
+  content: ''; position: absolute; z-index: -1; inset: 18% 9%; pointer-events: none;
+  background:
+    linear-gradient(105deg, transparent 0 35%, rgba(255,255,255,.48) 46%, transparent 57%),
+    repeating-linear-gradient(0deg, rgba(84,88,90,.018) 0 1px, transparent 1px 4px);
+  filter: blur(.4px);
+}
+.vm-brand-plate::after {
+  content:''; position:absolute; inset: 16% 8%; pointer-events:none;
+  border-block: 1px solid rgba(163,140,99,.22);
+}
 .vm-brand-mark {
-  width: 70%; aspect-ratio: 169.22 / 87.507;
-  background: linear-gradient(110deg, #927C56 0%, #D7C9A8 38%, #B29E76 64%, #927C56 100%);
+  position: relative; z-index: 1; width: 66%; aspect-ratio: 169.22 / 87.507;
+  background: linear-gradient(112deg, #7D6846 0%, #A99163 24%, #C2AC7E 43%, #927A51 64%, #B29A6C 78%, #796341 100%);
   mask: url('/brand/valore-emblem.svg') center / contain no-repeat;
-  filter: drop-shadow(0 1px 0 rgba(255,255,255,.12)) drop-shadow(0 -1px 0 rgba(0,0,0,.3));
+  filter: drop-shadow(0 1px 0 rgba(255,255,255,.72)) drop-shadow(0 2px 6px rgba(84,70,45,.13));
 }
+.vm-story-brand-name { color: var(--brand-gold-dark); }
 .vm-story-copy { max-width: 36rem; }
 .vm-story-copy .vm-heading { margin-block: 1rem 1.75rem; }
 .vm-story-copy p + p { margin-top: 1.25rem; }
@@ -29,8 +41,10 @@
 @media (max-width: 767px) {
   .vm-story { padding-top: .75rem; }
   .vm-story-grid { grid-template-columns: minmax(0,1fr); gap: 1.5rem; }
-  .vm-brand-plate { aspect-ratio: auto; height: clamp(136px, 36vw, 156px); }
-  .vm-brand-mark { width: 60%; max-width: 220px; }
+  .vm-brand-plate {
+    aspect-ratio: auto; height: clamp(136px, 36vw, 156px);
+  }
+  .vm-brand-mark { width: 58%; max-width: 220px; }
   .vm-story-copy .vm-heading { margin-block: .5rem 1rem; }
   .vm-story-copy p + p { margin-top: 1rem; }
   .vm-story-signoff { font-size: 1rem; line-height: 1.6; }

@@ -9,7 +9,9 @@ export function LifestyleSection() {
             <div className="vm-brand-mark" aria-hidden="true" />
           </figure>
           <div className="vm-story-copy">
-            <p className="vm-eyebrow">Философия Valore Milano</p>
+            <p className="vm-eyebrow">
+              Философия <span className="vm-story-brand-name">Valore Milano</span>
+            </p>
             <h2 className="vm-heading">
               Ценность в каждой детали
             </h2>

@@ -3,10 +3,22 @@
 
 .vm-site-header {
   position: fixed; inset: 0 0 auto; z-index: 50; height: var(--header-height);
-  display: flex; align-items: center; background: rgba(255,255,255,.97);
-  border-bottom: 1px solid transparent; transition: border-color var(--motion-duration);
+  display: flex; align-items: center;
+  background: rgba(246,246,243,.94);
+  border-bottom: 1px solid rgba(84,88,90,.09);
+  box-shadow: 0 1px 0 rgba(163,140,99,.04);
+  backdrop-filter: blur(14px) saturate(115%);
+  transition: background-color var(--motion-duration), border-color var(--motion-duration), box-shadow var(--motion-duration);
 }
-.vm-site-header[data-scrolled="true"] { border-bottom-color: var(--border); }
+.vm-site-header[data-scrolled="true"] {
+  background: rgba(246,246,243,.98);
+  border-bottom-color: rgba(84,88,90,.16);
+  box-shadow: 0 8px 30px rgba(39,43,45,.045);
+}
+.vm-header-logo {
+  color: #4A463E;
+  text-shadow: 0 1px 0 rgba(255,255,255,.72);
+}
 .vm-navigation-link {
   position: relative; display: inline-flex; align-items: center; min-height: 44px;
   color: var(--brand-graphite); font-size: .6875rem; letter-spacing: .13em; text-transform: uppercase;
