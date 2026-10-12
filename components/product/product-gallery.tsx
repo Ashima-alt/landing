@@ -1,8 +1,10 @@
 "use client"
 
-import { useCallback, useEffect, useState, type MouseEvent } from "react"
+import { useCallback, useEffect, useState, type PointerEvent } from "react"
 import Image from "next/image"
 import useEmblaCarousel from "embla-carousel-react"
+import { X, ZoomIn, ZoomOut } from "lucide-react"
+import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import type { ProductImage } from "@/lib/types"
 import { mediaUrl } from "@/lib/api"
 import { cn } from "@/lib/utils"
@@ -19,10 +21,14 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
     align: "start",
   })
   const [selected, setSelected] = useState(0)
+  const [isHoverZoomed, setIsHoverZoomed] = useState(false)
+  const [isViewerOpen, setIsViewerOpen] = useState(false)
+  const [isViewerZoomed, setIsViewerZoomed] = useState(false)
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return
     setSelected(emblaApi.selectedScrollSnap())
+    setIsHoverZoomed(false)
   }, [emblaApi])
 
   useEffect(() => {
@@ -50,17 +56,14 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
     return () => viewport.removeEventListener("wheel", onWheel)
   }, [emblaApi, images.length])
 
-  const onMouseMove = (event: MouseEvent<HTMLDivElement>) => {
-    if (!emblaApi || images.length < 2) return
+  const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType !== "mouse" || event.buttons !== 0 || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return
     const rect = event.currentTarget.getBoundingClientRect()
-    const x = Math.min(Math.max(event.clientX - rect.left, 0), rect.width)
-    const next = Math.min(
-      images.length - 1,
-      Math.floor((x / rect.width) * images.length)
-    )
-    if (next !== emblaApi.selectedScrollSnap()) {
-      emblaApi.scrollTo(next)
-    }
+    const x = Math.min(100, Math.max(0, ((event.clientX - rect.left) / rect.width) * 100))
+    const y = Math.min(100, Math.max(0, ((event.clientY - rect.top) / rect.height) * 100))
+    event.currentTarget.style.setProperty("--gallery-x", `${x}%`)
+    event.currentTarget.style.setProperty("--gallery-y", `${y}%`)
+    setIsHoverZoomed(true)
   }
 
   if (!images.length) {
@@ -74,18 +77,31 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
   }
 
   return (
-    <div className="space-y-5 opacity-0 animate-fade-in" style={{ animationFillMode: "forwards" }}>
+    <Dialog open={isViewerOpen} onOpenChange={(open) => {
+      setIsViewerOpen(open)
+      setIsHoverZoomed(false)
+      setIsViewerZoomed(false)
+    }}>
+    <div className="vm-product-gallery space-y-5 opacity-0 animate-fade-in" style={{ animationFillMode: "forwards" }}>
+      <div className="relative">
       <div
-        className="overflow-hidden bg-white cursor-ew-resize touch-pan-y"
+        className="vm-gallery-stage overflow-hidden bg-white touch-pan-y"
         ref={emblaRef}
-        onMouseMove={onMouseMove}
+        data-zoomed={isHoverZoomed}
+        onPointerEnter={onPointerMove}
+        onPointerMove={onPointerMove}
+        onPointerLeave={() => setIsHoverZoomed(false)}
+        onPointerCancel={() => setIsHoverZoomed(false)}
+        onPointerDown={() => setIsHoverZoomed(false)}
       >
         <div className="flex">
           {images.map((image, index) => (
             <div
               key={image.id}
-              className="product-card-media relative min-w-0 flex-[0_0_100%] aspect-square"
+              className="product-card-media relative min-w-0 flex-[0_0_100%] aspect-square overflow-hidden"
+              data-selected={selected === index}
             >
+              <div className="vm-gallery-image-layer">
               <Image
                 src={mediaUrl(image.url)}
                 alt={`${title} — фото ${index + 1}`}
@@ -94,9 +110,16 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
                 className="object-contain object-center p-3"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
+              </div>
             </div>
           ))}
         </div>
+      </div>
+      <DialogTrigger asChild>
+        <button type="button" className="vm-gallery-control vm-gallery-open" aria-label={`Увеличить фото ${selected + 1}: ${title}`}>
+          <ZoomIn className="size-5" aria-hidden="true" />
+        </button>
+      </DialogTrigger>
       </div>
 
       {images.length > 1 && (
@@ -140,5 +163,25 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
         </>
       )}
     </div>
+      <DialogContent className="vm-gallery-dialog flex flex-col w-[calc(100%-2rem)] max-w-none sm:max-w-[min(1100px,calc(100%-4rem))] gap-0 rounded-none border-0 p-0 shadow-none" showCloseButton={false} aria-describedby={undefined}>
+        <DialogTitle className="sr-only">{title} — фото {selected + 1}</DialogTitle>
+        <div className="flex shrink-0 items-center justify-between gap-3 px-3 py-2">
+          <span className="vm-meta">Фото {selected + 1} из {images.length}</span>
+          <div className="flex items-center gap-1">
+            <button type="button" className="vm-gallery-control" aria-label={isViewerZoomed ? "Уменьшить фото" : "Приблизить фото"} aria-pressed={isViewerZoomed} onClick={() => setIsViewerZoomed((zoomed) => !zoomed)}>
+              {isViewerZoomed ? <ZoomOut className="size-5" aria-hidden="true" /> : <ZoomIn className="size-5" aria-hidden="true" />}
+            </button>
+            <DialogClose asChild>
+              <button type="button" className="vm-gallery-control" aria-label="Закрыть просмотр фото"><X className="size-5" aria-hidden="true" /></button>
+            </DialogClose>
+          </div>
+        </div>
+        <div className="vm-gallery-viewer" data-zoomed={isViewerZoomed} tabIndex={0} role="region" aria-label="Фотография товара, при увеличении доступна прокрутка">
+          <div className="vm-gallery-viewer-canvas product-card-media relative">
+            <Image src={mediaUrl((images[selected] ?? images[0]).url)} alt={`${title} — фото ${selected + 1}`} fill className="object-contain object-center p-3" sizes="1100px" />
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   )
 }
