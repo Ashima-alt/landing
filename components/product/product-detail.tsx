@@ -139,7 +139,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 <ProductCardMedia
                   product={item}
                   className="isolate bg-white [&_img]:mix-blend-multiply"
-                  sizes="(max-width: 767px) calc((100vw - 44px) / 2), (max-width: 1023px) 45vw, 33vw"
+                  sizes="(max-width: 767px) calc((100vw - 44px) / 2), (max-width: 1023px) calc((100vw - 88px) / 3), (max-width: 1279px) calc((100vw - 136px) / 3), 33vw"
                 />
                 <div className="vm-card-copy">
                   <h3 className="vm-card-title group-hover:text-primary transition-colors">

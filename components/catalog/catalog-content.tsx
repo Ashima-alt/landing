@@ -155,7 +155,7 @@ export function CatalogContent() {
         <button
           type="button"
           onClick={() => setIsFilterOpen(true)}
-          className="lg:hidden vm-link flex items-center gap-2"
+          className="xl:hidden vm-link flex items-center gap-2"
           aria-expanded={isFilterOpen}
           aria-controls="catalog-filters"
         >
@@ -164,8 +164,8 @@ export function CatalogContent() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[200px_minmax(0,1fr)] gap-10 xl:gap-16">
-        <aside className="hidden lg:block sticky top-28 self-start" aria-label="Фильтры каталога">{filterPanel}</aside>
+      <div className="grid grid-cols-1 xl:grid-cols-[200px_minmax(0,1fr)] gap-10 xl:gap-16">
+        <aside className="hidden xl:block sticky top-28 self-start" aria-label="Фильтры каталога">{filterPanel}</aside>
 
         <div className="min-w-0">
           {error && (
@@ -200,7 +200,7 @@ export function CatalogContent() {
                     <ProductCardMedia
                       product={product}
                       className="isolate bg-white [&_img]:mix-blend-multiply"
-                      sizes="(max-width: 767px) calc((100vw - 44px) / 2), (max-width: 1023px) 45vw, (max-width: 1279px) 35vw, 300px"
+                      sizes="(max-width: 767px) calc((100vw - 44px) / 2), (max-width: 1023px) calc((100vw - 88px) / 3), (max-width: 1279px) calc((100vw - 136px) / 3), (max-width: 1415px) calc((100vw - 432px) / 3), 328px"
                     />
                     <div className="vm-card-copy">
                       <h3 className="vm-card-title group-hover:text-primary transition-colors">
@@ -222,7 +222,7 @@ export function CatalogContent() {
       </div>
 
       {isFilterOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-50 xl:hidden">
           <button
             type="button"
             className="absolute inset-0 bg-sage-dark/40"

@@ -46,4 +46,25 @@
       overflow-wrap: anywhere;
     }
   }
+  @media (min-width: 768px) and (max-width: 1279px) {
+    .vm-product-card .product-card-media { margin-bottom: 1rem; }
+    .vm-product-card .vm-card-title {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      height: 2.9em;
+      overflow: hidden;
+      overflow-wrap: anywhere;
+      font-size: 1rem;
+      line-height: 1.45;
+    }
+    .vm-product-card .vm-card-meta { overflow-wrap: anywhere; }
+    .vm-product-card .vm-card-details {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      height: 3.3em;
+      overflow: hidden;
+    }
+  }
 }
